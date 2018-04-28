@@ -120,6 +120,11 @@ export class Provider extends React.Component {
   }
 }
 
+const getPassedProps = props => {
+  const { lifecycle, vault, select, ...plucked } = props;
+  return plucked;
+};
+
 class ConnectInternal extends React.Component {
   unsubscribe = null;
   lastObservedState = null;
@@ -152,8 +157,9 @@ class ConnectInternal extends React.Component {
       this.lastObservedState,
       this.getObservedState()
     );
+    const propsChanged = hasObjectChanged(getPassedProps(this.props), getPassedProps(nextProps));
 
-    return stateChanged;
+    return stateChanged || propsChanged;
   }
 
   componentDidUpdate() {
