@@ -1,22 +1,27 @@
 
-# Revault: Yes, another state management library
+# Revault
+> The state management library you were waiting for
 
 ## Table Of Contents
-1. [Why Revault](#why-revault)
+1. [Why Revault?](#why-revault)
 1. [Usage](#usage)
 1. [Debugging](#debugging)
 1. [Docs](#docs)
 
 ## Why Revault?
-Don't get me wrong, I love [Redux](https://github.com/reactjs/redux) - it's made developing web apps extremely fun for the last two years and without doubt has pushed the web forward. Lately however, a few things have started to frustrate me:
+[Redux](https://github.com/reactjs/redux) is great and without doubt has helped push the web forward by providing a strong mental model around global state. Lately however, a few things have started to frustrate me when using Redux:
 
-1. Repetition. The boilerplate, just for the simplest task, has become wearisome.
-1. Logic. Business logic is spread out. Some logic lives in the action, some logic lives in the reducer, some logic lives in the component.
-1. Middleware. Gone are days of lost hours debugging misbehaving middlewares.
+1. Repetition. The boilerplate, just for the most simple task, has become wearisome.
+1. Logic. Business logic is spread out. Some logic lives in the action, some lives in the reducer, and yet some more lives in the component.
+1. Middleware. Apart from logging and handling promises, middleware is more of a hassle than a help.
 
-A few libaries have been released recently that have attempted to solve these issues. A few to note, and mainly where inspiration for Revault was drawn, are [Unstated](https://github.com/jamiebuilds/unstated) and [Statty](https://github.com/vesparny/statty). Both libraries use a basic component with [render props](https://reactjs.org/docs/render-props.html) to access global state ❤️ - but each had shortcomings. Unstated's concept of a `Store` is great for controlling central logic and is the core of Revault, but I didn't like the method of access via an array of subscriptions. I love Statty's access method, using a `select` prop to pluck only the pieces of state you want. But Statty was missing the central logic unit.
+A few libaries have been released recently that have attempted to solve these issues. Two to note, and mainly where inspiration for Revault was drawn, are [Unstated](https://github.com/jamiebuilds/unstated) and [Statty](https://github.com/vesparny/statty). Both libraries use a basic component with [render props](https://reactjs.org/docs/render-props.html) to access global state ❤️ - but each had shortcomings.
 
-Thus, Revault was born. A hybrid child taking the best traits of both. Hope ya like it 👍
+Unstated's `Container` works well to control business logic and encapsulate several pieces of state, all while feeling very familiar to Component local state. Containers, otherwise known as Stores in Revault, live on, only accessed differently on render.
+
+Statty's approach to access is great - by using a `select` prop to pluck only the pieces of state you want, it's easy to inject derived state as a render prop, while also making it easy to check for referential equality to prevent unecessary renders. Statty was only missing a dedicated logic unit.
+
+Thus, Revault was born - aiming to assume the best traits of Unstated and Statty. Hope ya like it 👍
 
 ## Usage
 
@@ -44,43 +49,36 @@ export default class TodoStore extends Store {
 }
 ```
 
-### Sweet. Now, we need to create the vault, passing in the store(s) you've created above.
+
+### Sweet. Next, wrap your application with the `Provider` and pass it your stores.
 ```js
-import { createVault } from 'revault';
+import { render } from 'react-dom';
+import { Provider as VaultProvider } from 'revault';
 import * as stores from './stores';
 
 /*
-  Stores may look something like:
+  `stores` may look something like the following. The key's will be used to as the store identifier within the vault.
   {
     todos: TodoStore,
     ...etc
   }
 */
-const vault = createVault({ ...stores });
-
-export default vault;
-```
-
-### We're really flying now. Next, wrap your application with the `Provider` and pass it the vault you just created:
-```js
-import { Provider as VaultProvider } from 'revault';
-import vault from './vault';
 
 const App = () => (
   <VaultProvider vault={vault}>
     <Entry />
   </VaultProvider>
-)
+);
 
-render(<App />, document.getElementById("root"));
+render(<App />, window.root);
 ```
 
 
-### And finally, drum roll please, import the `Connect` component to access our vault at render time.
+### And finally, drum roll please 🥁, import the `Connect` component to access our vault on render:
 ```js
 import { Connect } from 'revault';
 
-export default (props) => (
+export default () => (
   <Connect
     select={(stores) => ({
       todos: stores.todos.state.entries,
@@ -109,12 +107,13 @@ export default (props) => (
 )
 ```
 
-There! You've done it. You have your first todo app in 4 simple steps. No more actions, dispatchers, middlewares. Just some stores and a render prop.
+You've done it! You have your first todo app up and running 3 simple steps.
+
 
 ## Debugging
-Inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug), Vault also comes fit with a debugging suite.
+Inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug), Vault also comes with a debugging module.
 
-All you need to do is require the debug file, which will monkey patch both the Vault and Store classes, as well as add the vault instance to the window as `VAULT`:
+All you need to do is import the debug file, which will monkey patch both the Vault and Store classes, as well as add the vault instance to the window as `window.VAULT`:
 ```js
 import 'revault/debug';
 ```
