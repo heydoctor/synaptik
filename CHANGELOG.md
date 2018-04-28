@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/kylealwyn/revault/compare/v0.2.6...v0.3.0) (2018-04-28)
+
+
+### Features
+
+* **Connect:** Connect extends from PureComponent ([6e5678b](https://github.com/kylealwyn/revault/commit/6e5678b))
+
+
+
 <a name="0.2.6"></a>
 ## [0.2.6](https://github.com/kylealwyn/revault/compare/v0.2.5...v0.2.6) (2018-04-28)
 
