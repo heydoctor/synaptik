@@ -8,10 +8,7 @@
   "author": "Kyle Alwyn <kjalwyn@gmail.com>",
   "license": "MIT",
   "private": false,
-  "files": [
-    "lib",
-    "README.md"
-  ],
+  "files": ["lib", "debug.js", "README.md"],
   "scripts": {
     "precommit": "lint-staged",
     "bump": "standard-version",
@@ -20,11 +17,13 @@
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
     "rollup": "rollup -c",
-    "release": "npm-run-all test build bump && git push --follow-tags origin master && npm publish",
+    "release":
+      "npm-run-all test build bump && git push --follow-tags origin master && npm publish",
     "example": "parcel example/index.html"
   },
   "dependencies": {
     "create-react-context": "^0.2.2",
+    "deep-object-diff": "^1.1.0",
     "tickedoff": "^1.0.2"
   },
   "peerDependencies": {
@@ -62,9 +61,6 @@
     "standard-version": "^4.0.0"
   },
   "lint-staged": {
-    "*.{js,json,md}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,json,md}": ["prettier --write", "git add"]
   }
 }
