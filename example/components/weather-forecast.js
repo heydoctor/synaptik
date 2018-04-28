@@ -23,7 +23,7 @@ export default () => (
         ) : (
           <div>
             {state.forecast.map(day => (
-              <div>
+              <div key={day.date}>
                 <span>Date: {day.date}</span>
                 <span>High: {day.high}</span>
                 <span>Low: {day.low}</span>
