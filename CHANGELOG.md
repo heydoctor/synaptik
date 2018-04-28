@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.6"></a>
+## [0.2.6](https://github.com/kylealwyn/revault/compare/v0.2.5...v0.2.6) (2018-04-28)
+
+
+### Bug Fixes
+
+* undo that ([8fa2789](https://github.com/kylealwyn/revault/commit/8fa2789))
+
+
+
 <a name="0.2.5"></a>
 ## [0.2.5](https://github.com/kylealwyn/revault/compare/v0.2.4...v0.2.5) (2018-04-28)
 
