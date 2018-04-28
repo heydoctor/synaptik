@@ -34,7 +34,7 @@ export const createVault = (stores = {}, options = {}) => {
   return vault;
 };
 
-class Vault {
+export class Vault {
   __state = {};
   __subscriptions = {};
   __counter = 0;

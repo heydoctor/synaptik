@@ -61,6 +61,6 @@
     "standard-version": "^4.0.0"
   },
   "lint-staged": {
-    "*.{js,json,md}": ["prettier --write", "git add"]
+    "*.{js}": ["prettier --write", "git add"]
   }
 }
