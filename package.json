@@ -1,6 +1,6 @@
 {
   "name": "revault",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Yet another state management library",
   "main": "lib/revault.js",
   "module": "lib/revault.es.js",
@@ -8,7 +8,11 @@
   "author": "Kyle Alwyn <kjalwyn@gmail.com>",
   "license": "MIT",
   "private": false,
-  "files": ["lib", "debug.js", "README.md"],
+  "files": [
+    "lib",
+    "debug.js",
+    "README.md"
+  ],
   "scripts": {
     "precommit": "lint-staged",
     "bump": "standard-version",
@@ -17,8 +21,7 @@
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
     "rollup": "rollup -c",
-    "release":
-      "npm-run-all test build bump && git push --follow-tags origin master && npm publish",
+    "release": "npm-run-all test build bump && git push --follow-tags origin master && npm publish",
     "example": "parcel example/index.html"
   },
   "dependencies": {
@@ -61,6 +64,9 @@
     "standard-version": "^4.0.0"
   },
   "lint-staged": {
-    "*.{js}": ["prettier --write", "git add"]
+    "*.{js}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
