@@ -24,7 +24,8 @@
     "example": "parcel example/index.html"
   },
   "dependencies": {
-    "create-react-context": "^0.2.2"
+    "create-react-context": "^0.2.2",
+    "tickedoff": "^1.0.2"
   },
   "peerDependencies": {
     "react": ">=0.14",

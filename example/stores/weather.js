@@ -1,4 +1,4 @@
-import { Store } from '../../src';
+import { Store } from '../../src/revault';
 import produce from 'immer';
 
 export default class WeatherStore extends Store {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Connect } from '../../src';
+import { Connect } from '../../src/revault';
 
 export default () => (
   <Connect

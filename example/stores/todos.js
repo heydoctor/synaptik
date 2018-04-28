@@ -1,4 +1,4 @@
-import { Store } from '../../src';
+import { Store } from '../../src/revault';
 
 export default class TodoStore extends Store {
   state = {

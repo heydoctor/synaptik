@@ -3,6 +3,7 @@ node_modules
 .cache
 build
 dist
+lib
 coverage
 npm-debug.log*
 yarn-debug.log*
