@@ -40,8 +40,8 @@ export default class TodoStore extends Store {
   }
 
   addTodo = todo => {
-    // setState has the same functionality as Component.setState,
-    // except that it's synchronous
+    // setState has the same functionality as Component.setState
+    // meaning that it runs async and can also take a function.
     this.setState({
       entries: [...this.state.entries, todo],
     });
