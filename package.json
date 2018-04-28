@@ -1,0 +1,66 @@
+{
+  "name": "revault",
+  "version": "0.1.0",
+  "description": "Yet another state management library",
+  "main": "lib/revault.js",
+  "module": "lib/revault.es.js",
+  "repository": "https://github.com/kylealwyn/revault",
+  "author": "Kyle Alwyn <kjalwyn@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "files": ["lib", "README.md"],
+  "scripts": {
+    "precommit": "lint-staged",
+    "bump": "standard-version",
+    "lint": "standard",
+    "testonly": "jest --coverage",
+    "format": "prettier --write {src,example}/**/*.js",
+    "test": "npm-run-all lint testonly",
+    "build": "npm-run-all clean rollup",
+    "clean": "rimraf dist",
+    "rollup": "rollup -c",
+    "release":
+      "npm-run-all test build bump && git push --follow-tags origin master && npm publish",
+    "example": "parcel example/index.html"
+  },
+  "dependencies": {
+    "create-react-context": "^0.2.2"
+  },
+  "peerDependencies": {
+    "react": ">=0.14",
+    "react-dom": ">=0.14"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.0.5",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.1",
+    "enzyme-to-json": "^3.1.1",
+    "husky": "^0.14.3",
+    "immer": "^1.2.1",
+    "jest": "^21.2.1",
+    "lint-staged": "^7.0.5",
+    "npm-run-all": "^4.1.1",
+    "parcel-bundler": "1.5.1",
+    "prettier": "^1.12.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-test-renderer": "^16.0.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-filesize": "^1.5.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "standard": "^10.0.3",
+    "standard-version": "^4.0.0"
+  },
+  "lint-staged": {
+    "*.{js,json,md}": ["prettier --write", "git add"]
+  }
+}
