@@ -25,7 +25,7 @@ Thus, Revault was born - aiming to assume the best traits of Unstated and Statty
 
 ## Usage
 
-### Begin by creating your first store, which extends from our base `Store`
+Begin by creating your first store, which extends from `Store`
 ```js
 import { Store } from 'revault';
 
@@ -50,14 +50,15 @@ export default class TodoStore extends Store {
 ```
 
 
-### Sweet. Next, wrap your application with the `Provider` and pass it your stores.
+Sweet. Next, wrap your application with the `Provider` and pass in your stores.
 ```js
 import { render } from 'react-dom';
 import { Provider as VaultProvider } from 'revault';
 import * as stores from './stores';
 
 /*
-  `stores` may look something like the following. The key's will be used to as the store identifier within the vault.
+  `stores` may look something like the following. The key's will be as
+  identifier's when accessing the store during render.
   {
     todos: TodoStore,
     ...etc
@@ -74,7 +75,7 @@ render(<App />, window.root);
 ```
 
 
-### And finally, drum roll please 🥁, import the `Connect` component to access our vault on render:
+And finally, drum roll please 🥁, import the `Connect` component to access our vault on render:
 ```js
 import { Connect } from 'revault';
 
