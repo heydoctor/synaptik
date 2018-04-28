@@ -1,18 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import createReactContext from 'create-react-context';
 import nextTick from 'tickedoff';
 
 const Context = createReactContext({});
-
-const hasObjectChanged = (current, next) => {
-  for (const key of Object.keys(next)) {
-    if (current[key] !== next[key]) {
-      return true;
-    }
-  }
-
-  return false;
-};
 
 export const createVault = (stores = {}, options = {}) => {
   const storeIds = Object.keys(stores);
@@ -105,8 +96,13 @@ export class Store {
 }
 
 export class Provider extends React.Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    vault: PropTypes.shape(),
+    stores: PropTypes.shape(),
+  }
+
+  constructor(props, context) {
+    super(props, context);
 
     this.vault = props.vault ? props.vault : createVault(props.stores);
   }
@@ -120,12 +116,20 @@ export class Provider extends React.Component {
   }
 }
 
-class ConnectInternal extends React.Component {
+class ConnectInternal extends React.PureComponent {
   unsubscribe = null;
-  lastObservedState = null;
+  state = {}
+
+  static propTypes = {
+    select: PropTypes.func.isRequired,
+    lifecycle: PropTypes.shape({
+      didMount: PropTypes.func,
+      didUpdate: PropTypes.func,
+      willUnmount: PropTypes.func,
+    })
+  }
 
   static defaultProps = {
-    select: () => {},
     lifecycle: {},
   };
 
@@ -133,28 +137,10 @@ class ConnectInternal extends React.Component {
     const { lifecycle, vault } = this.props;
 
     this.unsubscribe = vault.subscribe(() => {
-      this.setState(vault.getState());
+      this.setState(this.getObservedState());
     });
 
     if (lifecycle.didMount) lifecycle.didMount(...this.getArgs());
-  }
-
-  componentDidCatch(err) {
-    console.log(err);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    const { lifecycle } = this.props;
-    if (lifecycle.shouldUpdate)
-      return lifecycle.shouldUpdate(...this.getArgs());
-
-    const stateChanged = hasObjectChanged(
-      this.lastObservedState,
-      this.getObservedState()
-    );
-
-
-    return stateChanged;
   }
 
   componentDidUpdate() {
@@ -175,12 +161,10 @@ class ConnectInternal extends React.Component {
   }
 
   getObservedState() {
-    const { select } = this.props;
-    const state = select(...this.getArgs());
+    const state = this.props.select(...this.getArgs());
     if (typeof state !== 'object') {
-      throw new Error('The "select" prop must return an object.');
+      throw new Error('Connect#select should return an object.');
     }
-    this.lastObservedState = state;
     return state;
   }
 
