@@ -1,6 +1,6 @@
 {
   "name": "revault",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Yet another state management library",
   "main": "lib/revault.js",
   "module": "lib/revault.es.js",
