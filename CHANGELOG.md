@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/kylealwyn/revault/compare/v0.3.0...v0.4.0) (2018-04-30)
+
+
+### Bug Fixes
+
+* **Connect:** remove unneceessary call to getObservedState ([b76a692](https://github.com/kylealwyn/revault/commit/b76a692))
+* **Vault:** respect log flag ([988c107](https://github.com/kylealwyn/revault/commit/988c107))
+
+
+### Features
+
+* **Provider:** pass in a logger function instead of monkey patching Vault and Store prototypes ([6f267be](https://github.com/kylealwyn/revault/commit/6f267be))
+* **Store:** return a promise from setState ([a49d451](https://github.com/kylealwyn/revault/commit/a49d451))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/kylealwyn/revault/compare/v0.2.6...v0.3.0) (2018-04-28)
 
