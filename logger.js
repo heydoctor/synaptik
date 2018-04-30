@@ -14,7 +14,7 @@ export default function logStateChange(prevState, newState) {
   const diff = detailedDiff(prevState, newState);
   const groupName = `Vault Update`;
 
-  console.group(groupName);
+  console.groupCollapsed(groupName);
   logger('Added', '#18A76D', diff.added);
   logger('Updated', '#FDA429', diff.updated);
   logger('Deleted', '#f04545', diff.deleted);
