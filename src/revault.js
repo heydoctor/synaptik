@@ -118,7 +118,7 @@ export class Provider extends React.Component {
 
 class ConnectInternal extends React.PureComponent {
   unsubscribe = null;
-  state = {}
+  state = this.getObservedState();
 
   static propTypes = {
     select: PropTypes.func.isRequired,
@@ -157,22 +157,21 @@ class ConnectInternal extends React.PureComponent {
 
   getArgs() {
     const { vault } = this.props;
-    return [vault.stores, vault.state];
+    return [vault.stores, vault.getState()];
   }
 
   getObservedState() {
     const state = this.props.select(...this.getArgs());
     if (typeof state !== 'object') {
-      throw new Error('Connect#select should return an object.');
+      throw new Error('Expected `select` to return an object.');
     }
     return state;
   }
 
   render() {
     const { children, vault, ...props } = this.props;
-    const observedState = this.getObservedState();
 
-    return children(observedState, props);
+    return children(this.state, props);
   }
 }
 
