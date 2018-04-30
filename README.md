@@ -1,6 +1,10 @@
-
 # Revault
-> The state management library you were waiting for
+_The state management library you've been waiting for_
+
+[![npm](https://img.shields.io/npm/v/revault.svg)](https://www.npmjs.com/package/revault)
+[![npm](https://img.shields.io/npm/dm/revault.svg)](https://npm-stat.com/charts.html?package=revault&from=2017-05-19)
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-brightgreen.svg)](http://standardjs.com/)
+[![MIT License](https://img.shields.io/npm/l/revault.svg?style=flat-square)](https://github.com/kylealwyn/revault/blob/master/LICENSE)
 
 ## Table Of Contents
 1. [Why Revault?](#why-revault)
@@ -21,7 +25,7 @@ Unstated's `Container` works well to control business logic and encapsulate seve
 
 Statty's approach to access is great - by using a `select` prop to pluck only the pieces of state you want, it's easy to inject derived state as a render prop, while also making it easy to check for referential equality to prevent unecessary renders. Statty was only missing a dedicated logic unit.
 
-Thus, Revault was born - aiming to assume the best traits of Unstated and Statty. Hope ya like it 👍
+Thus, Revault was born - marrying the concepts of Unstated and Statty in what looks to be a happy union. Hope y'all like it! 😎
 
 ## Usage
 
@@ -51,7 +55,7 @@ export default class TodoStore extends Store {
 
 
 Sweet. Next, wrap your application with the `Provider` and pass in your stores.
-```js
+```jsx
 import { render } from 'react-dom';
 import { Provider as VaultProvider } from 'revault';
 import * as stores from './stores';
@@ -66,7 +70,7 @@ import * as stores from './stores';
 */
 
 const App = () => (
-  <VaultProvider vault={vault}>
+  <VaultProvider stores={stores}>
     <Entry />
   </VaultProvider>
 );
@@ -76,7 +80,7 @@ render(<App />, window.root);
 
 
 And finally, drum roll please 🥁, import the `Connect` component to access our vault on render:
-```js
+```jsx
 import { Connect } from 'revault';
 
 export default () => (
@@ -91,7 +95,7 @@ export default () => (
     {({ todos, input, updateInput, addTodo }) => (
       <>
         <ul>
-          {todo.map(todo => (
+          {todos.map(todo => (
             <li>{todo}</li>
           ))}
         </ul>
@@ -118,3 +122,58 @@ All you need to do is import the debug file, which will monkey patch both the Va
 ```js
 import 'revault/debug';
 ```
+
+## Docs
+
+### `<Provider>`
+
+Make the vault available to `<Connect>` via context
+
+#### props
+
+##### `stores`
+
+> `object` | required
+
+A hash of stores. The key will be used as the accessor name when selecting state. The value is your Store constructor.
+
+##### `vault`
+
+> `object`
+
+Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
+
+##### `inspect`
+
+> `function(oldState: object, newState: object, updaterFn: function)`
+
+Use the inspector prop during development to log state changes.
+
+`revault` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug)
+
+```jsx
+<Provider
+  stores={{
+    todos: TodoStore
+  }}
+  inspect={require('revault/inspect')}
+/>
+```
+
+### `<Connect>`
+
+Connect is a PureComponent that observes pieces of state and re-renders only when those pieces of state update.
+
+#### props
+
+##### `select`
+
+> `function(stores: object, state: object) | defaults to s => s | returns object`
+
+Selects the slice of the state needed by the children components.
+
+##### `render`
+
+> `function(state: object)` | required
+
+A render prop that is passed the object returned by `select`. You can pass the render function as a child of `<Connect>`.
