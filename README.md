@@ -174,8 +174,36 @@ Connect is a PureComponent that observes pieces of state and re-renders only whe
 
 Selects the slice of the state needed by the children components.
 
+##### `lifecycle`
+
+> `object`
+
+Access lifecycle methods of `<Connect>`. Each method has the same signature as `select` - so they will be passed `stores` and `state`. Comes with support for:
+- `didMount`
+- `didUpdate`
+- `willUnmount`
+
+Often, we need to do work in the lifecycle methods but that can be difficult when using functional components. `lifecycle` makes it easy to kick off async work when mounting or performing cleanup when unmounting.
+
+```jsx
+<Connect
+  select={() => ({})}
+  lifecycle={{
+    didMount(stores) {
+      stores.users.fetch(id);
+    },
+    willUnmount(stores) {
+      stores.users.cleanup();
+    }
+  }}
+/>
+```
+
 ##### `render`
 
 > `function(state: object)` | required
 
-A render prop that is passed the object returned by `select`. You can pass the render function as a child of `<Connect>`.
+The render fn is passed the observed state returned by `select`. You can also pass the render function as a child of `<Connect>`.
+
+## LICENSE
+[MIT License](LICENSE) © [Kyle Alwyn](kylealwyn.com)
