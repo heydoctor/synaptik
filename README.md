@@ -203,7 +203,7 @@ Often, we need to do work in the lifecycle methods but that can be difficult whe
 
 > `function(state: object)` | required
 
-The render fn is passed the observed state returned by `select`. You can also pass the render function as a child of `<Connect>`.
+The render fn is passed the observed state returned by `select`. You can also use a child function.
 
 ## LICENSE
 [MIT License](LICENSE) © [Kyle Alwyn](kylealwyn.com)

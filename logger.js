@@ -22,11 +22,3 @@ export default function logStateChange(prevState, newState) {
   logger('New state: ', '#555555', { ...newState });
   console.groupEnd(groupName);
 };
-
-
-// Vault.prototype.debugMode = true;
-// Vault.prototype.logState = function logState() {
-//   for (const [key, value] of Object.entries(this.stores)) {
-//     console.log(`%c${key}\n`, 'font-weight:bold', value.state);
-//   }
-// };

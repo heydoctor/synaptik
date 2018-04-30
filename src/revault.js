@@ -6,16 +6,9 @@ import nextTick from 'tickedoff';
 const Context = createReactContext({});
 
 export const createVault = (stores = {}, options = {}) => {
-  const storeIds = Object.keys(stores);
-  if (!storeIds.length) {
-    throw new Error(
-      'Provide at least one store while creating the vault. If you are having trouble, make sure you pass <Provider> either a valid vault or hash of Stores.'
-    );
-  }
-
   const vault = new Vault(options);
 
-  storeIds.forEach(id => {
+  Object.keys(stores).forEach(id => {
     const Store = stores[id];
     const instance = new Store(id, vault, options);
     vault.stores[id] = instance;
@@ -31,7 +24,7 @@ export class Vault {
   __counter = 0;
   stores = {};
 
-  constructor({ logger = () => {} }) {
+  constructor({ logger }) {
     this.logger = logger;
   }
 
@@ -39,11 +32,13 @@ export class Vault {
     return this.__state;
   }
 
-  updateState(storeId, state) {
+  updateState(storeId, state, { log = true } = {}) {
     const oldState = { ...this.__state };
     this.__state[storeId] = state;
     this.notify();
-    this.logger(oldState, this.__state);
+    if (log && this.logger) {
+      this.logger(oldState, this.__state);
+    }
   }
 
   subscribe(fn) {
