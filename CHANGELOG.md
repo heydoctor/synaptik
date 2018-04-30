@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.2"></a>
+## [0.4.2](https://github.com/kylealwyn/revault/compare/v0.4.1...v0.4.2) (2018-04-30)
+
+
+### Bug Fixes
+
+* **logger:** collapse log groups ([6058750](https://github.com/kylealwyn/revault/commit/6058750))
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/kylealwyn/revault/compare/v0.4.0...v0.4.1) (2018-04-30)
 
