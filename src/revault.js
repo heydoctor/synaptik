@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import createReactContext from 'create-react-context';
-import nextTick from 'tickedoff';
 
 const Context = createReactContext({});
 
 export const createVault = (stores = {}, options = {}) => {
-  const vault = new Vault(options);
+  let vault = new Vault(options);
 
   Object.keys(stores).forEach(id => {
-    const Store = stores[id];
-    const instance = new Store(id, vault, options);
+    let Store = stores[id];
+    let instance = new Store(id, vault, options);
     vault.stores[id] = instance;
     vault.updateState(id, instance.state);
   });
@@ -33,16 +32,17 @@ export class Vault {
   }
 
   updateState(storeId, state, { log = true } = {}) {
-    const oldState = { ...this.__state };
+    let oldState = { ...this.__state };
     this.__state[storeId] = state;
     this.notify();
+
     if (log && this.logger) {
       this.logger(oldState, this.__state);
     }
   }
 
   subscribe(fn) {
-    const id = ++this.__counter;
+    let id = ++this.__counter;
     this.__subscriptions[id] = fn;
 
     return () => {
@@ -52,7 +52,7 @@ export class Vault {
 
   notify() {
     Object.keys(this.__subscriptions).forEach(id => {
-      const fn = this.__subscriptions[id];
+      let fn = this.__subscriptions[id];
       if (!fn) return;
       fn(this.state);
     });
@@ -65,22 +65,11 @@ export class Store {
     this.vault = vault;
   }
 
-  setState(updater, cb, { hideStateChanges = false } = {}) {
-    nextTick(() => {
-      let stateUpdates;
-
-      if (typeof updater === 'function') {
-        stateUpdates = updater(this.state);
-      } else {
-        stateUpdates = updater;
-      }
-
-      const nextState = { ...this.state, ...stateUpdates };
-
-      this.state = nextState;
-      this.vault.updateState(this.id, this.state, { log: !hideStateChanges });
-
-      if (typeof cb === 'function') cb(this.state);
+  setState(updater, { log = true } = {}) {
+    return Promise.resolve().then(() => {
+      let updates = typeof updater === 'function' ? updater(this.state) : updater;
+      this.state = { ...this.state, ...updates };
+      this.vault.updateState(this.id, this.state, { log });
     });
   }
 }
@@ -124,7 +113,7 @@ class ConnectInternal extends React.PureComponent {
   };
 
   componentDidMount() {
-    const { lifecycle, vault } = this.props;
+    let { lifecycle, vault } = this.props;
 
     this.unsubscribe = vault.subscribe(() => {
       this.setState(this.getObservedState());
@@ -134,24 +123,24 @@ class ConnectInternal extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    const { lifecycle } = this.props;
+    let { lifecycle } = this.props;
     if (lifecycle.didUpdate) lifecycle.didUpdate(...this.getArgs());
   }
 
   componentWillUnmount() {
     this.unsubscribe();
 
-    const { lifecycle } = this.props;
+    let { lifecycle } = this.props;
     if (lifecycle.willUnmount) lifecycle.willUnmount(...this.getArgs());
   }
 
   getArgs() {
-    const { vault } = this.props;
+    let { vault } = this.props;
     return [vault.stores, vault.getState()];
   }
 
   getObservedState() {
-    const state = this.props.select(...this.getArgs());
+    let state = this.props.select(...this.getArgs());
     if (typeof state !== 'object') {
       throw new Error('Expected `select` to return an object.');
     }
@@ -159,7 +148,7 @@ class ConnectInternal extends React.PureComponent {
   }
 
   render() {
-    const { children, vault, ...props } = this.props;
+    let { children, vault, ...props } = this.props;
 
     return children(this.state, props);
   }

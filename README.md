@@ -9,7 +9,6 @@ _The state management library you've been waiting for_
 ## Table Of Contents
 1. [Why Revault?](#why-revault)
 1. [Usage](#usage)
-1. [Debugging](#debugging)
 1. [Docs](#docs)
 
 ## Why Revault?
@@ -29,7 +28,8 @@ Thus, Revault was born - marrying the concepts of Unstated and Statty in what lo
 
 ## Usage
 
-Begin by creating your first store, which extends from `Store`
+Begin by creating your first store, which extends from `Store`:
+
 ```js
 import { Store } from 'revault';
 
@@ -44,8 +44,8 @@ export default class TodoStore extends Store {
   }
 
   addTodo = todo => {
-    // setState has the same functionality as Component.setState
-    // meaning that it runs async and can also take a function.
+    // setState acts like React component's setState,
+    // meaning that it runs asynchronously and can also be passed an updater function.
     this.setState({
       entries: [...this.state.entries, todo],
     });
@@ -53,8 +53,8 @@ export default class TodoStore extends Store {
 }
 ```
 
+Next, wrap your application with the `Provider` and pass in your stores.
 
-Sweet. Next, wrap your application with the `Provider` and pass in your stores.
 ```jsx
 import { render } from 'react-dom';
 import { Provider as VaultProvider } from 'revault';
@@ -78,8 +78,8 @@ const App = () => (
 render(<App />, window.root);
 ```
 
+Finally, drum roll please 🥁, use the `Connect` component to access our vault on render:
 
-And finally, drum roll please 🥁, import the `Connect` component to access our vault on render:
 ```jsx
 import { Connect } from 'revault';
 
@@ -113,15 +113,6 @@ export default () => (
 ```
 
 You've done it! You have your first todo app up and running 3 simple steps.
-
-
-## Debugging
-Inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug), Vault also comes with a debugging module.
-
-All you need to do is import the debug file, which will monkey patch both the Vault and Store classes, as well as add the vault instance to the window as `window.VAULT`:
-```js
-import 'revault/debug';
-```
 
 ## Docs
 

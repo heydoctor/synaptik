@@ -26,8 +26,7 @@
   },
   "dependencies": {
     "create-react-context": "^0.2.2",
-    "deep-object-diff": "^1.1.0",
-    "tickedoff": "^1.0.2"
+    "deep-object-diff": "^1.1.0"
   },
   "peerDependencies": {
     "prop-types": "^15.6.1",
