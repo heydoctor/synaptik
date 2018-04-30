@@ -31,19 +31,19 @@ export class Vault {
   __counter = 0;
   stores = {};
 
-  constructor() {
-    if (this.debugMode) {
-      window.VAULT = this;
-    }
+  constructor({ logger = () => {} }) {
+    this.logger = logger;
   }
 
   getState() {
     return this.__state;
   }
 
-  updateState(storeName, state) {
-    this.__state[storeName] = state;
+  updateState(storeId, state) {
+    const oldState = { ...this.__state };
+    this.__state[storeId] = state;
     this.notify();
+    this.logger(oldState, this.__state);
   }
 
   subscribe(fn) {
@@ -65,10 +65,9 @@ export class Vault {
 }
 
 export class Store {
-  constructor(id, vault, opts = {}) {
+  constructor(id, vault) {
     this.id = id;
     this.vault = vault;
-    this.logStateChanges = opts.logStateChanges || true;
   }
 
   setState(updater, cb, { hideStateChanges = false } = {}) {
@@ -83,12 +82,8 @@ export class Store {
 
       const nextState = { ...this.state, ...stateUpdates };
 
-      if (!hideStateChanges && this.debugMode && this.logStateChanges) {
-        this.logStateChange(this.state, nextState);
-      }
-
       this.state = nextState;
-      this.vault.updateState(this.id, this.state);
+      this.vault.updateState(this.id, this.state, { log: !hideStateChanges });
 
       if (typeof cb === 'function') cb(this.state);
     });
@@ -104,7 +99,7 @@ export class Provider extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.vault = props.vault ? props.vault : createVault(props.stores);
+    this.vault = props.vault ? props.vault : createVault(props.stores, { logger: props.logger });
   }
 
   render() {

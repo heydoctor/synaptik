@@ -1,1 +1,20 @@
-{ "presets": ["./.babelrc.js"] }
+{
+  "comments": false,
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "loose": true,
+        "targets": {
+          "browsers": ["last 1 version"]
+        }
+      }
+    ],
+    "react"
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-class-properties"
+  ]
+}

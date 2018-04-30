@@ -10,7 +10,7 @@
   "private": false,
   "files": [
     "lib",
-    "debug.js",
+    "logger.js",
     "README.md"
   ],
   "scripts": {
@@ -48,7 +48,7 @@
     "jest": "^21.2.1",
     "lint-staged": "^7.0.5",
     "npm-run-all": "^4.1.1",
-    "parcel-bundler": "1.5.1",
+    "parcel-bundler": "^1.7.1",
     "prettier": "^1.12.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",

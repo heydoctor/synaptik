@@ -143,20 +143,22 @@ A hash of stores. The key will be used as the accessor name when selecting state
 
 Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
 
-##### `inspect`
+##### `logger`
 
-> `function(oldState: object, newState: object, updaterFn: function)`
+> `function(oldState: object, newState: object)`
 
 Use the inspector prop during development to log state changes.
 
-`revault` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug)
+`revault` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug).
 
 ```jsx
+import logger from 'revault/logger';
+
 <Provider
   stores={{
     todos: TodoStore
   }}
-  inspect={require('revault/inspect')}
+  logger={logger}
 />
 ```
 
