@@ -11,7 +11,7 @@ export const createVault = (stores = {}, options = {}) => {
     let Store = stores[id];
     let instance = new Store(id, vault, options);
     vault.stores[id] = instance;
-    vault.updateState(id, instance.state);
+    vault.updateState(id, instance.state, { log: false });
   });
 
   return vault;
