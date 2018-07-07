@@ -23,7 +23,7 @@ export class Vault {
   __counter = 0;
   stores = {};
 
-  constructor({ logger }) {
+  constructor({ logger } = {}) {
     this.logger = logger;
   }
 
@@ -53,21 +53,24 @@ export class Vault {
   notify() {
     Object.keys(this.__subscriptions).forEach(id => {
       let fn = this.__subscriptions[id];
-      if (!fn) return;
-      fn(this.state);
+      typeof fn === 'function' && fn(this.__state);
     });
   }
 }
 
 export class Store {
   constructor(id, vault) {
+    if (!id) throw new Error('Store requires an id');
+    if (!vault) throw new Error('Store requires a vault instance');
+
     this.id = id;
     this.vault = vault;
   }
 
   setState(updater, { log = true } = {}) {
     return Promise.resolve().then(() => {
-      let updates = typeof updater === 'function' ? updater(this.state) : updater;
+      let updates =
+        typeof updater === 'function' ? updater(this.state) : updater;
       this.state = { ...this.state, ...updates };
       this.vault.updateState(this.id, this.state, { log });
     });
@@ -78,12 +81,14 @@ export class Provider extends React.Component {
   static propTypes = {
     vault: PropTypes.shape(),
     stores: PropTypes.shape(),
-  }
+  };
 
   constructor(props, context) {
     super(props, context);
 
-    this.vault = props.vault ? props.vault : createVault(props.stores, { logger: props.logger });
+    this.vault = props.vault
+      ? props.vault
+      : createVault(props.stores, { logger: props.logger });
   }
 
   render() {
@@ -105,8 +110,8 @@ class ConnectInternal extends React.PureComponent {
       didMount: PropTypes.func,
       didUpdate: PropTypes.func,
       willUnmount: PropTypes.func,
-    })
-  }
+    }),
+  };
 
   static defaultProps = {
     lifecycle: {},
