@@ -1,6 +1,7 @@
 # Revault
 _The state management library you've been waiting for_
 
+[![Build Status](https://travis-ci.org/sappira-inc/revault.svg?branch=master)](https://travis-ci.org/sappira-inc/revault) [![codecov](https://codecov.io/gh/sappira-inc/revault/branch/master/graph/badge.svg)](https://codecov.io/gh/sappira-inc/revault)
 [![npm](https://img.shields.io/npm/v/revault.svg)](https://www.npmjs.com/package/revault)
 [![npm](https://img.shields.io/npm/dm/revault.svg)](https://npm-stat.com/charts.html?package=revault&from=2017-05-19)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-brightgreen.svg)](http://standardjs.com/)
@@ -8,8 +9,8 @@ _The state management library you've been waiting for_
 
 ## Table Of Contents
 1. [Why Revault?](#why-revault)
-1. [Usage](#usage)
-1. [Docs](#docs)
+2. [Usage](#usage)
+3. [Docs](#docs)
 
 ## Why Revault?
 [Redux](https://github.com/reactjs/redux) is great and without doubt has helped push the web forward by providing a strong mental model around global state. Lately however, a few things have started to frustrate me when using Redux:
