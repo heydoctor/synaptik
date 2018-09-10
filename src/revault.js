@@ -140,8 +140,8 @@ class ConnectInternal extends React.PureComponent {
   }
 
   getArgs() {
-    let { vault } = this.props;
-    return [vault.stores, vault.getState()];
+    let { vault, ...props } = this.props;
+    return [vault.stores, vault.getState(), props];
   }
 
   getObservedState() {
