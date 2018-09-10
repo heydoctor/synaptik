@@ -166,3 +166,13 @@ export function Connect(props) {
     </Context.Consumer>
   );
 }
+
+export function connect(selector, lifecycle = {}) {
+  return Component => {
+    return props => (
+      <Connect select={selector} lifecycle={lifecycle}>
+        {state => <Component {...state} {...props} />}
+      </Connect>
+    );
+  };
+}

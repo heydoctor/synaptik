@@ -1,5 +1,5 @@
 import { Store } from '../../src/revault';
-import produce from 'immer';
+import immer from 'immer';
 
 export default class WeatherStore extends Store {
   state = {
@@ -17,7 +17,7 @@ export default class WeatherStore extends Store {
       .then(data => {
         setTimeout(() => {
           this.setState(
-            produce(draft => {
+            immer(draft => {
               draft.loading = false;
               draft.forecast = data.query.results.channel.item.forecast;
             })
