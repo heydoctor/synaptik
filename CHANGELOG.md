@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/kylealwyn/revault/compare/v0.4.3...v0.5.0) (2018-09-10)
+
+
+### Bug Fixes
+
+* add tests for Vault and Store ([4b8b502](https://github.com/kylealwyn/revault/commit/4b8b502))
+
+
+### Features
+
+* New connect hoc ([4f264f4](https://github.com/kylealwyn/revault/commit/4f264f4))
+
+
+
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/kylealwyn/revault/compare/v0.4.2...v0.4.3) (2018-06-04)
 
