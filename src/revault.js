@@ -65,6 +65,7 @@ export class Store {
 
     this.id = id;
     this.vault = vault;
+    this.state = {};
   }
 
   setState(updater, { log = true } = {}) {
