@@ -113,6 +113,42 @@ export default () => (
 )
 ```
 
+You can also use the `connect` [HOC](https://reactjs.org/docs/higher-order-components.html) if you need to perform more complex logic in component methods:
+
+```jsx
+import React, { Component } from 'react';
+import { connect } from 'revault';
+
+@connect((stores) => ({
+  todos: stores.todos.state.entries,
+  input: stores.todos.state.input,
+  updateInput: stores.todos.updateInput,
+  addTodo: stores.todos.addTodo,
+}))
+export default class TodoList extends Component {
+  render() {
+    const { todos, input, updateInput, addTodo } = this.props;
+
+    return (
+      <>
+        <ul>
+          {todos.map(todo => (
+            <li>{todo}</li>
+          ))}
+        </ul>
+
+        <form onSubmit={addTodo}>
+          <input value={input} onChange={updateInput} />
+          <button type="submit" >
+            Submit
+          </button>
+        </form>
+      <>
+    )
+  }
+}
+```
+
 You've done it! You have your first todo app up and running 3 simple steps.
 
 ## Docs
