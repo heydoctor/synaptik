@@ -107,7 +107,7 @@ export default () => (
             Submit
           </button>
         </form>
-      <>
+      </>
     )}
   </Connect>
 )
@@ -143,7 +143,7 @@ export default class TodoList extends Component {
             Submit
           </button>
         </form>
-      <>
+      </>
     )
   }
 }
@@ -184,7 +184,7 @@ import logger from 'revault/logger';
 
 <Provider
   stores={{
-    todos: TodoStore
+    todos: TodoStore,
   }}
   logger={logger}
 />
