@@ -141,8 +141,8 @@ class ConnectInternal extends React.PureComponent {
   }
 
   getArgs() {
-    let { vault, ...props } = this.props;
-    return [vault.stores, vault.getState(), props];
+    let { vault, lifecycle, select, ...props } = this.props;
+    return [vault.stores, props];
   }
 
   getObservedState() {
@@ -171,7 +171,7 @@ export function Connect(props) {
 export function connect(selector, lifecycle = {}) {
   return Component => {
     return props => (
-      <Connect select={selector} lifecycle={lifecycle}>
+      <Connect {...props} select={selector} lifecycle={lifecycle}>
         {state => <Component {...state} {...props} />}
       </Connect>
     );

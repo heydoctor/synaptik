@@ -7,8 +7,8 @@ const enhancer = connect(
     loading: weather.state.loading,
   }),
   {
-    didMount({ weather }) {
-      weather.load();
+    didMount({ weather }, props) {
+      weather.load(props.zipCode);
     },
   }
 );

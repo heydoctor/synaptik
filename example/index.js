@@ -10,7 +10,7 @@ const App = () => (
   <VaultProvider stores={stores} logger={logger}>
     <Fragment>
       <TodoList />
-      <WeatherForecast />
+      <WeatherForecast zipCode={94133} />
     </Fragment>
   </VaultProvider>
 );
