@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/kylealwyn/revault/compare/v0.5.1...v0.6.0) (2018-10-13)
+
+
+### Bug Fixes
+
+* **Store:** Set state to empty object on construction ([5a7c5a5](https://github.com/kylealwyn/revault/commit/5a7c5a5))
+
+
+### Features
+
+* **Connect:** Access props as second argument in HOC select method ([#5](https://github.com/kylealwyn/revault/issues/5)) ([850d325](https://github.com/kylealwyn/revault/commit/850d325))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/kylealwyn/revault/compare/v0.5.0...v0.5.1) (2018-09-10)
 
