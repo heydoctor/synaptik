@@ -1,4 +1,4 @@
-import { Store } from '../../src/revault';
+import { Store } from '../../src/synaptik';
 import immer from 'immer';
 
 export default class WeatherStore extends Store {

@@ -1,4 +1,4 @@
-import { Store } from '../../src/revault';
+import { Store } from '../../src/synaptik';
 
 export default class TodoStore extends Store {
   state = {

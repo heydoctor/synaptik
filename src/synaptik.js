@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import createReactContext from 'create-react-context';
+import isEqual from 'react-fast-compare';
 
 const Context = createReactContext({});
 
@@ -101,7 +102,7 @@ export class Provider extends React.Component {
   }
 }
 
-class ConnectInternal extends React.PureComponent {
+class ConnectConsumer extends React.Component {
   unsubscribe = null;
   state = this.getObservedState();
 
@@ -126,6 +127,10 @@ class ConnectInternal extends React.PureComponent {
     });
 
     if (lifecycle.didMount) lifecycle.didMount(...this.getArgs());
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
 
   componentDidUpdate() {
@@ -163,7 +168,7 @@ class ConnectInternal extends React.PureComponent {
 export function Connect(props) {
   return (
     <Context.Consumer>
-      {vault => <ConnectInternal {...props} vault={vault} />}
+      {vault => <ConnectConsumer {...props} vault={vault} />}
     </Context.Consumer>
   );
 }
