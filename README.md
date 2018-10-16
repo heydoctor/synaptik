@@ -1,38 +1,38 @@
-# Revault
+# synaptik
 _The state management library you've been waiting for_
 
-[![Build Status](https://travis-ci.org/sappira-inc/revault.svg?branch=master)](https://travis-ci.org/sappira-inc/revault) [![codecov](https://codecov.io/gh/sappira-inc/revault/branch/master/graph/badge.svg)](https://codecov.io/gh/sappira-inc/revault)
-[![npm](https://img.shields.io/npm/v/revault.svg)](https://www.npmjs.com/package/revault)
-[![npm](https://img.shields.io/npm/dm/revault.svg)](https://npm-stat.com/charts.html?package=revault&from=2017-05-19)
+[![Build Status](https://travis-ci.org/sappira-inc/synaptik.svg?branch=master)](https://travis-ci.org/sappira-inc/synaptik) [![codecov](https://codecov.io/gh/sappira-inc/synaptik/branch/master/graph/badge.svg)](https://codecov.io/gh/sappira-inc/synaptik)
+[![npm](https://img.shields.io/npm/v/synaptik.svg)](https://www.npmjs.com/package/synaptik)
+[![npm](https://img.shields.io/npm/dm/synaptik.svg)](https://npm-stat.com/charts.html?package=synaptik&from=2017-05-19)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-brightgreen.svg)](http://standardjs.com/)
-[![MIT License](https://img.shields.io/npm/l/revault.svg?style=flat-square)](https://github.com/kylealwyn/revault/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/kylealwyn/synaptik/blob/master/LICENSE)
 
 ## Table Of Contents
-1. [Why Revault?](#why-revault)
+1. [Why synaptik?](#why-synaptik)
 2. [Usage](#usage)
 3. [Docs](#docs)
 
-## Why Revault?
+## Why synaptik?
 [Redux](https://github.com/reactjs/redux) is great and without doubt has helped push the web forward by providing a strong mental model around global state. Lately however, a few things have started to frustrate me when using Redux:
 
 1. Repetition. The boilerplate, just for the most simple task, has become wearisome.
 1. Logic. Business logic is spread out. Some logic lives in the action, some lives in the reducer, and yet some more lives in the component.
 1. Middleware. Apart from logging and handling promises, middleware is more of a hassle than a help.
 
-A few libaries have been released recently that have attempted to solve these issues. Two to note, and mainly where inspiration for Revault was drawn, are [Unstated](https://github.com/jamiebuilds/unstated) and [Statty](https://github.com/vesparny/statty). Both libraries use a basic component with [render props](https://reactjs.org/docs/render-props.html) to access global state ❤️ - but each had shortcomings.
+A few libaries have been released recently that have attempted to solve these issues. Two to note, and mainly where inspiration for synaptik was drawn, are [Unstated](https://github.com/jamiebuilds/unstated) and [Statty](https://github.com/vesparny/statty). Both libraries use a basic component with [render props](https://reactjs.org/docs/render-props.html) to access global state ❤️ - but each had shortcomings.
 
-Unstated's `Container` works well to control business logic and encapsulate several pieces of state, all while feeling very familiar to Component local state. Containers, otherwise known as Stores in Revault, live on, only accessed differently on render.
+Unstated's `Container` works well to control business logic and encapsulate several pieces of state, all while feeling very familiar to Component local state. Containers, otherwise known as Stores in synaptik, live on, only accessed differently on render.
 
 Statty's approach to access is great - by using a `select` prop to pluck only the pieces of state you want, it's easy to inject derived state as a render prop, while also making it easy to check for referential equality to prevent unecessary renders. Statty was only missing a dedicated logic unit.
 
-Thus, Revault was born - marrying the concepts of Unstated and Statty in what looks to be a happy union. Hope y'all like it! 😎
+Thus, synaptik was born - marrying the concepts of Unstated and Statty in what looks to be a happy union. Hope y'all like it! 😎
 
 ## Usage
 
 Begin by creating your first store, which extends from `Store`:
 
 ```js
-import { Store } from 'revault';
+import { Store } from 'synaptik';
 
 export default class TodoStore extends Store {
   state = {
@@ -58,7 +58,7 @@ Next, wrap your application with the `Provider` and pass in your stores.
 
 ```jsx
 import { render } from 'react-dom';
-import { Provider as VaultProvider } from 'revault';
+import { Provider as VaultProvider } from 'synaptik';
 import * as stores from './stores';
 
 /*
@@ -82,7 +82,7 @@ render(<App />, window.root);
 Finally, drum roll please 🥁, use the `Connect` component to access our vault on render:
 
 ```jsx
-import { Connect } from 'revault';
+import { Connect } from 'synaptik';
 
 export default () => (
   <Connect
@@ -117,7 +117,7 @@ You can also use the `connect` [HOC](https://reactjs.org/docs/higher-order-compo
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'revault';
+import { connect } from 'synaptik';
 
 @connect((stores) => ({
   todos: stores.todos.state.entries,
@@ -177,10 +177,10 @@ Alternatively, you can pass in a preinstantiated vault. This is helpful during t
 
 Use the inspector prop during development to log state changes.
 
-`revault` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug).
+`synaptik` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug).
 
 ```jsx
-import logger from 'revault/logger';
+import logger from 'synaptik/logger';
 
 <Provider
   stores={{

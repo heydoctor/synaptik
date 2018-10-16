@@ -1,5 +1,5 @@
 import React from 'react';
-import { Connect } from '../../src/revault';
+import { Connect } from '../../src/synaptik';
 
 export default () => (
   <Connect

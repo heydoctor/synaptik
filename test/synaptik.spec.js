@@ -1,6 +1,6 @@
-import * as revault from '../src/revault';
+import * as synaptik from '../src/synaptik';
 
-class TestStore extends revault.Store {
+class TestStore extends synaptik.Store {
   state = {
     counter: 0,
   };
@@ -8,23 +8,23 @@ class TestStore extends revault.Store {
 
 let vault;
 beforeEach(() => {
-  vault = new revault.Vault();
+  vault = new synaptik.Vault();
 });
 
 describe('createVault', () => {
   test('returns a vault instance', () => {
-    let v = revault.createVault({
+    let v = synaptik.createVault({
       test: TestStore
     });
 
-    expect(v).toBeInstanceOf(revault.Vault);
+    expect(v).toBeInstanceOf(synaptik.Vault);
   });
 });
 
 describe('Vault', () => {
   test('logger', () => {
     const logger = jest.fn();
-    const vault = new revault.Vault({ logger });
+    const vault = new synaptik.Vault({ logger });
     // logs by default
     vault.updateState();
     expect(logger).toHaveBeenCalled();
@@ -52,17 +52,18 @@ describe('Vault', () => {
     vault.updateState('test', {
       counter: 1,
     });
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(vault.__state);
 
-    spy.mockReset();
 
     // Unsubscribe to the vault
     subscription();
+
     vault.updateState('test', {
       counter: 2,
     });
-    expect(spy).not.toHaveBeenCalled();
+
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
 

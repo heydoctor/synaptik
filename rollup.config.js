@@ -3,7 +3,7 @@ import filesize from 'rollup-plugin-filesize';
 import pkg from './package.json';
 
 export default {
-  input: 'src/revault.js',
+  input: 'src/synaptik.js',
   output: [
     {
       file: pkg.main,
@@ -18,5 +18,8 @@ export default {
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
   ],
-  plugins: [babel(), filesize()],
+  plugins: [
+    babel({ babelrc: true }),
+    filesize()
+  ],
 };

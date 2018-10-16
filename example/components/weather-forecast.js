@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from '../../src/revault';
+import { connect } from '../../src/synaptik';
 
 const enhancer = connect(
   ({ weather }) => ({
