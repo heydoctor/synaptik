@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/kylealwyn/synaptik/compare/v1.0.1...v1.1.0) (2019-01-08)
+
+
+### Features
+
+* **Connect:** Convert back to PureComponent ([ec5466d](https://github.com/kylealwyn/synaptik/commit/ec5466d))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/kylealwyn/synaptik/compare/v0.5.1...v0.6.0) (2018-10-13)
 
