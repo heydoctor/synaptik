@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import createReactContext from 'create-react-context';
 
-const Context = createReactContext({});
+const Context = createContext({});
 
 export const createVault = (stores = {}, options = {}) => {
   let vault = new Vault(options);
@@ -176,4 +175,49 @@ export function connect(selector, lifecycle = {}) {
       </Connect>
     );
   };
+}
+
+export const useSynaptik = selector => {
+  const vault = useContext(Context);
+  const [state, setState] = useState(selector(vault.stores));
+
+  useEffect(() => {
+    return vault.subscribe(() => {
+      const nextState = selector(vault.stores);
+      if (!isShallowEqual(nextState, state)) {
+        setState(nextState);
+      }
+    });
+  }, []);
+
+  return state;
+}
+
+const isShallowEqual = (objA, objB) => {
+  if (objA === objB) {
+    return true;
+  }
+
+  if (!objA || !objB) {
+    return false;
+  }
+
+  var aKeys = Object.keys(objA);
+  var bKeys = Object.keys(objB);
+  var len = aKeys.length;
+
+  if (bKeys.length !== len) {
+    return false;
+  }
+
+  for (var i = 0; i < len; i++) {
+    var key = aKeys[i];
+
+    if (objA[key] !== objB[key]) {
+      return false;
+    }
+  }
+
+  return true;
+
 }

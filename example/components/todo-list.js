@@ -1,35 +1,38 @@
-import React from 'react';
-import { Connect } from '../../src/synaptik';
+import React, { useState } from 'react';
+import { useSynaptik } from '../../src/synaptik';
 
-export default () => (
-  <Connect
-    select={({ todos }) => ({
-      todos: todos.state.entries,
-      input: todos.state.input,
-      updateInput: todos.updateInput,
-      addTodo: todos.addTodo,
-      deleteTodo: todos.deleteTodo,
-    })}
-  >
-    {state => (
-      <div>
-        {console.log('Rendering ToDo List')}
-        <h2>ToDo List</h2>
+export default () => {
+  const [todoInput, setTodoInput] = useState('');
+  const state = useSynaptik(({ todos }) => ({
+    todos: todos.state.todos,
+    addTodo: todos.addTodo,
+    deleteTodo: todos.deleteTodo,
+  }));
 
-        <ul>
-          {state.todos.map((entry, i) => (
-            <li key={entry}>
-              {entry}&nbsp;
-              <span onClick={() => state.deleteTodo(i)}>x</span>
-            </li>
-          ))}
-        </ul>
+  const onSubmit = (e) => {
+    e.preventDefault();
+    state.addTodo(todoInput);
+    setTodoInput('');
+  }
 
-        <form onSubmit={state.addTodo}>
-          <input value={state.input} onChange={state.updateInput} />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    )}
-  </Connect>
-);
+  return (
+    <div>
+      {console.log('Rendering ToDo List')}
+      <h2>ToDo List</h2>
+
+      <ul>
+        {state.todos.map((entry, i) => (
+          <li key={entry}>
+            {entry}&nbsp;
+            <span onClick={() => state.deleteTodo(i)}>x</span>
+          </li>
+        ))}
+      </ul>
+
+      <form onSubmit={onSubmit}>
+        <input value={todoInput} onChange={(e) => setTodoInput(e.target.value)} />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
