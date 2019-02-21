@@ -113,7 +113,9 @@ export default () => (
 )
 ```
 
-You can also use the `connect` [HOC](https://reactjs.org/docs/higher-order-components.html) if you need to perform more complex logic in component methods:
+## `connect` [HOC](https://reactjs.org/docs/higher-order-components.html)
+Sometimes is useful to inject your state via props to access in component methods - particularly when you're performing
+more complex logic and want to keep your state pure.
 
 ```jsx
 import React, { Component } from 'react';
@@ -139,13 +141,45 @@ export default class TodoList extends Component {
 
         <form onSubmit={addTodo}>
           <input value={input} onChange={updateInput} />
-          <button type="submit" >
+          <button type="submit">
             Submit
           </button>
         </form>
       </>
     )
   }
+}
+```
+
+## `useSynapse`
+We also expose a hook in order to access state in your functional components.
+```
+import { useSynapse } from 'synaptik';
+
+function TodoList() {
+  const state = useSynapse((stores) => ({
+    todos: stores.todos.state.entries,
+    input: stores.todos.state.input,
+    updateInput: stores.todos.updateInput,
+    addTodo: stores.todos.addTodo,
+  }));
+
+  return (
+    <>
+      <ul>
+        {todos.map(todo => (
+          <li>{todo}</li>
+        ))}
+      </ul>
+
+      <form onSubmit={addTodo}>
+        <input value={input} onChange={updateInput} />
+        <button type="submit">
+          Submit
+        </button>
+      </form>
+    </>
+  )
 }
 ```
 
@@ -232,6 +266,10 @@ Often, we need to do work in the lifecycle methods but that can be difficult whe
 > `function(state: object)` | required
 
 The render fn is passed the observed state returned by `select`. You can also use a child function.
+
+### `useSynapse(selector)`
+
+- `selector(stores, state): StateSlice`
 
 ## LICENSE
 [MIT License](LICENSE) © [Kyle Alwyn](kylealwyn.com)
