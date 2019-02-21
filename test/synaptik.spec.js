@@ -1,4 +1,4 @@
-import * as synaptik from '../src/synaptik';
+import * as synaptik from '../src';
 
 class TestStore extends synaptik.Store {
   state = {
@@ -6,60 +6,50 @@ class TestStore extends synaptik.Store {
   };
 }
 
-let vault;
+let synapse;
 beforeEach(() => {
-  vault = new synaptik.Vault();
+  synapse = new synaptik.Synapse({});
 });
 
-describe('createVault', () => {
-  test('returns a vault instance', () => {
-    let v = synaptik.createVault({
-      test: TestStore
-    });
-
-    expect(v).toBeInstanceOf(synaptik.Vault);
-  });
-});
-
-describe('Vault', () => {
+describe('Synapse', () => {
   test('logger', () => {
     const logger = jest.fn();
-    const vault = new synaptik.Vault({ logger });
+    const synapse = new synaptik.Synapse({}, { logger });
     // logs by default
-    vault.updateState();
+    synapse.updateState();
     expect(logger).toHaveBeenCalled();
 
     logger.mockReset();
 
     // ignore logs
-    vault.updateState(null, null, { log: false });
+    synapse.updateState(null, null, { log: false });
     expect(logger).not.toHaveBeenCalled();
   });
 
   test('updating state', () => {
-    vault.updateState('test', {
+    synapse.updateState('test', {
       counter: 1,
     });
-    const newState = vault.getState();
+    const newState = synapse.getState();
     expect(newState.test.counter).toEqual(1);
   });
 
   test('subscriptions', () => {
     const spy = jest.fn();
 
-    // Subscribe to the vault
-    const subscription = vault.subscribe(spy);
-    vault.updateState('test', {
+    // Subscribe to the synapse
+    const subscription = synapse.subscribe(spy);
+    synapse.updateState('test', {
       counter: 1,
     });
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(vault.__state);
+    expect(spy).toHaveBeenCalledWith(synapse.state);
 
 
-    // Unsubscribe to the vault
+    // Unsubscribe to the synapse
     subscription();
 
-    vault.updateState('test', {
+    synapse.updateState('test', {
       counter: 2,
     });
 
@@ -71,10 +61,10 @@ describe('Store', () => {
   let store;
 
   beforeEach(() => {
-    store = new TestStore('test', vault);
+    store = new TestStore('test', synapse);
   });
 
-  test('requires id and vault', () => {
+  test('requires id and synapse', () => {
     expect(() => new TestStore()).toThrowErrorMatchingSnapshot();
     expect(() => new TestStore('test')).toThrowErrorMatchingSnapshot();
   });
@@ -90,11 +80,11 @@ describe('Store', () => {
     expect(spy).toHaveBeenCalledWith(store.state);
   });
 
-  test('setState calls vault.updateState', async () => {
+  test('setState calls synapse.updateState', async () => {
     const spy = jest.fn().mockImplementationOnce(() => ({}));
-    vault.updateState = jest.fn();
+    synapse.updateState = jest.fn();
     await store.setState(spy);
-    expect(vault.updateState).toHaveBeenCalledWith(store.id, store.state, {
+    expect(synapse.updateState).toHaveBeenCalledWith(store.id, store.state, {
       log: true,
     });
   });
