@@ -9,11 +9,11 @@ export default () => {
     deleteTodo: todos.deleteTodo,
   }));
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     state.addTodo(todoInput);
     setTodoInput('');
-  }
+  };
 
   return (
     <div>
@@ -23,16 +23,17 @@ export default () => {
       <ul>
         {state.todos.map((entry, i) => (
           <li key={entry}>
-            {entry}&nbsp;
+            {entry}
+            &nbsp;
             <span onClick={() => state.deleteTodo(i)}>x</span>
           </li>
         ))}
       </ul>
 
       <form onSubmit={onSubmit}>
-        <input value={todoInput} onChange={(e) => setTodoInput(e.target.value)} />
+        <input value={todoInput} onChange={e => setTodoInput(e.target.value)} />
         <button type="submit">Submit</button>
       </form>
     </div>
   );
-}
+};

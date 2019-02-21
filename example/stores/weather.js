@@ -14,11 +14,13 @@ export default class WeatherStore extends Store {
       this.setState(
         immer(draft => {
           draft.loading = false;
-          draft.forecast = [{
-            date: 'today',
-            high: 75,
-            low: 70
-          }];
+          draft.forecast = [
+            {
+              date: 'today',
+              high: 75,
+              low: 70,
+            },
+          ];
         })
       );
     }, 1500);
