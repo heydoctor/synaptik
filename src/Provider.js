@@ -5,15 +5,15 @@ import Synapse from './Synapse';
 
 export default class Provider extends React.Component {
   static propTypes = {
-    value: PropTypes.shape(),
+    synapse: PropTypes.shape(),
     stores: PropTypes.shape(),
   };
 
   constructor(props, context) {
     super(props, context);
 
-    this.synapse = props.value
-      ? props.value
+    this.synapse = props.synapse
+      ? props.synapse
       : new Synapse(props.stores, { logger: props.logger });
   }
 
