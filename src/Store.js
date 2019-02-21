@@ -9,8 +9,7 @@ export default class Store {
   }
 
   setState(updater, { log = true } = {}) {
-    let updates =
-      typeof updater === 'function' ? updater(this.state) : updater;
+    let updates = typeof updater === 'function' ? updater(this.state) : updater;
     this.state = { ...this.state, ...updates };
     this.synapse.updateState(this.id, this.state, { log });
   }
