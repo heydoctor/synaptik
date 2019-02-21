@@ -1,4 +1,4 @@
-import { Store } from '../../src/synaptik';
+import { Store } from '../../src';
 
 export default class TodoStore extends Store {
   state = {

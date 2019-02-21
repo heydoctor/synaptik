@@ -1,4 +1,4 @@
-import { Store } from '../../src/synaptik';
+import { Store } from '../../src';
 import immer from 'immer';
 
 export default class WeatherStore extends Store {

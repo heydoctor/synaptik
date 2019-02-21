@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useSynaptik } from '../../src/synaptik';
+import { useSynapse } from '../../src';
 
 export default () => {
   const [todoInput, setTodoInput] = useState('');
-  const state = useSynaptik(({ todos }) => ({
+  const state = useSynapse(({ todos }) => ({
     todos: todos.state.todos,
     addTodo: todos.addTodo,
     deleteTodo: todos.deleteTodo,
