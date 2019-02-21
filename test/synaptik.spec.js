@@ -1,15 +1,22 @@
+import React from 'react';
+import { render,testHook, act, cleanup }  from 'react-testing-library';
+import 'jest-dom/extend-expect'
 import * as synaptik from '../src';
 
-class TestStore extends synaptik.Store {
+class CounterStore extends synaptik.Store {
   state = {
     counter: 0,
   };
+  increment() {
+    this.setState({ counter: this.state.counter + 1, })
+  }
 }
 
-let synapse;
+let synapse = new synaptik.Synapse({ counter: CounterStore });
 beforeEach(() => {
-  synapse = new synaptik.Synapse({});
-});
+  synapse = new synaptik.Synapse({ counter: CounterStore });
+})
+afterEach(cleanup);
 
 describe('Synapse', () => {
   test('logger', () => {
@@ -61,31 +68,53 @@ describe('Store', () => {
   let store;
 
   beforeEach(() => {
-    store = new TestStore('test', synapse);
+    store = new CounterStore('test', synapse);
   });
 
   test('requires id and synapse', () => {
-    expect(() => new TestStore()).toThrowErrorMatchingSnapshot();
-    expect(() => new TestStore('test')).toThrowErrorMatchingSnapshot();
+    expect(() => new CounterStore()).toThrowErrorMatchingSnapshot();
+    expect(() => new CounterStore('test')).toThrowErrorMatchingSnapshot();
   });
 
-  test('setState returns a promise', () => {
-    const promise = store.setState({});
-    expect(typeof promise.then).toEqual('function');
-  });
-
-  test('setState can take an updater function', async () => {
+  test('setState can take an updater function', () => {
     const spy = jest.fn().mockImplementationOnce(() => ({}));
-    const promise = await store.setState(spy);
+    store.setState(spy);
     expect(spy).toHaveBeenCalledWith(store.state);
   });
 
-  test('setState calls synapse.updateState', async () => {
+  test('setState calls synapse.updateState', () => {
     const spy = jest.fn().mockImplementationOnce(() => ({}));
     synapse.updateState = jest.fn();
-    await store.setState(spy);
+    store.setState(spy);
     expect(synapse.updateState).toHaveBeenCalledWith(store.id, store.state, {
       log: true,
     });
   });
 });
+
+describe('useSynapse', () => {
+  const Counter = () => {
+    const state = synaptik.useSynapse(({ counter }) => ({ counter: counter.state.counter }))
+    return (
+      <div>Counter: {state.counter}</div>
+    )
+  }
+
+  const App = () => (
+    <synaptik.Provider synapse={synapse}>
+      <Counter />
+    </synaptik.Provider>
+  )
+
+  test('should return correct state', () => {
+    const { getByText, rerender } = render(<App />);
+
+    expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 0')
+
+    act(() => {
+      synapse.stores.counter.increment()
+    })
+
+    expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 1')
+  })
+})

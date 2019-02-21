@@ -9,11 +9,9 @@ export default class Store {
   }
 
   setState(updater, { log = true } = {}) {
-    return Promise.resolve().then(() => {
-      let updates =
-        typeof updater === 'function' ? updater(this.state) : updater;
-      this.state = { ...this.state, ...updates };
-      this.synapse.updateState(this.id, this.state, { log });
-    });
+    let updates =
+      typeof updater === 'function' ? updater(this.state) : updater;
+    this.state = { ...this.state, ...updates };
+    this.synapse.updateState(this.id, this.state, { log });
   }
 }
