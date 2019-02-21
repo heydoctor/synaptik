@@ -113,9 +113,10 @@ export default () => (
 )
 ```
 
-## `connect` [HOC](https://reactjs.org/docs/higher-order-components.html)
-Sometimes is useful to inject your state via props to access in component methods - particularly when you're performing
-more complex logic and want to keep your state pure.
+You've done it! You have your first todo app up and running 3 simple steps.
+
+## `@connect`
+Use the connect [HOC](https://reactjs.org/docs/higher-order-components.html) to inject your state as props. This is particuarly useful when you need to access props in your component methods.
 
 ```jsx
 import React, { Component } from 'react';
@@ -152,7 +153,7 @@ export default class TodoList extends Component {
 ```
 
 ## `useSynapse`
-We also expose a hook in order to access state in your functional components.
+We also expose a hook to easily access your stores in functional components.
 
 ```jsx
 import { useSynapse } from 'synaptik';
@@ -183,8 +184,6 @@ function TodoList() {
   )
 }
 ```
-
-You've done it! You have your first todo app up and running 3 simple steps.
 
 ## Docs
 
