@@ -4,7 +4,7 @@ import shallowEqual from './shallow-equal';
 
 export default function useSynapse(selector) {
   const synapse = useContext(Context);
-  const select = () => selector(synapse.stores, synapse.state);
+  const select = () => selector(synapse.stores);
   const [state, setState] = useState(select());
 
   useEffect(() => {

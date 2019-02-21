@@ -153,11 +153,12 @@ export default class TodoList extends Component {
 
 ## `useSynapse`
 We also expose a hook in order to access state in your functional components.
-```
+
+```jsx
 import { useSynapse } from 'synaptik';
 
 function TodoList() {
-  const state = useSynapse((stores) => ({
+  const state = useSynapse(stores => ({
     todos: stores.todos.state.entries,
     input: stores.todos.state.input,
     updateInput: stores.todos.updateInput,
@@ -167,13 +168,13 @@ function TodoList() {
   return (
     <>
       <ul>
-        {todos.map(todo => (
+        {state.todos.map(todo => (
           <li>{todo}</li>
         ))}
       </ul>
 
-      <form onSubmit={addTodo}>
-        <input value={input} onChange={updateInput} />
+      <form onSubmit={state.addTodo}>
+        <input value={state.input} onChange={state.updateInput} />
         <button type="submit">
           Submit
         </button>
@@ -269,7 +270,7 @@ The render fn is passed the observed state returned by `select`. You can also us
 
 ### `useSynapse(selector)`
 
-- `selector(stores, state): StateSlice`
+- `selector(stores): StateSlice`
 
 ## LICENSE
 [MIT License](LICENSE) © [Kyle Alwyn](kylealwyn.com)
