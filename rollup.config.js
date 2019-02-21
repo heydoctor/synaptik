@@ -3,7 +3,7 @@ import filesize from 'rollup-plugin-filesize';
 import pkg from './package.json';
 
 export default {
-  input: 'src/synaptik.js',
+  input: 'src/index.js',
   output: [
     {
       file: pkg.main,
