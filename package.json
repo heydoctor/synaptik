@@ -14,7 +14,6 @@
     "README.md"
   ],
   "scripts": {
-    "precommit": "lint-staged",
     "bump": "standard-version",
     "format": "prettier --write {src,example}/**/*.js",
     "test": "jest",
@@ -64,11 +63,13 @@
     "rollup-plugin-filesize": "^6.0.1",
     "standard-version": "^5.0.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
-    "**/*.{js}": [
-      "prettier --write",
-      "git add"
-    ]
+    "**/*.{js}": ["prettier --write", "git add"]
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
