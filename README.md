@@ -7,25 +7,25 @@ _The state management library you've been waiting for_
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-brightgreen.svg)](http://standardjs.com/)
 [![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/kylealwyn/synaptik/blob/master/LICENSE)
 
-## Table Of Contents
+## Table of Contents
 1. [Why synaptik?](#why-synaptik)
 2. [Usage](#usage)
 3. [Docs](#docs)
 
-## Why synaptik?
-[Redux](https://github.com/reactjs/redux) is great and without doubt has helped push the web forward by providing a strong mental model around global state. Lately however, a few things have started to frustrate me when using Redux:
+## Why Synaptik?
+[Redux](https://github.com/reactjs/redux) is a great tool and undoubtedly helped push the web forward by providing a strong mental model around global state. Redux, however, does come with its flaws:
 
 1. Repetition. The boilerplate, just for the most simple task, has become wearisome.
-1. Logic. Business logic is spread out. Some logic lives in the action, some lives in the reducer, and yet some more lives in the component.
-1. Middleware. Apart from logging and handling promises, middleware is more of a hassle than a help.
+2. Distributed logic. Business logic is spread out. Some logic lives in the action, some in the reducer, and some in the component.
+3. Middleware. Apart from logging and handling promises, middleware ends up being a hassle and makes debugging terribly difficult.
 
-A few libaries have been released recently that have attempted to solve these issues. Two to note, and mainly where inspiration for synaptik was drawn, are [Unstated](https://github.com/jamiebuilds/unstated) and [Statty](https://github.com/vesparny/statty). Both libraries use a basic component with [render props](https://reactjs.org/docs/render-props.html) to access global state ❤️ - but each had shortcomings.
+Some other state management solutions in the wild have attempted to solve these issues. Two to note, and mainly where inspiration for Synaptik was drawn, are [Unstated](https://github.com/jamiebuilds/unstated) and [Statty](https://github.com/vesparny/statty). Both use a basic component with [render props](https://reactjs.org/docs/render-props.html) to access global state ❤️ - but each had shortcomings.
 
 Unstated's `Container` works well to control business logic and encapsulate several pieces of state, all while feeling very familiar to Component local state. Containers, otherwise known as Stores in synaptik, live on, only accessed differently on render.
 
-Statty's approach to access is great - by using a `select` prop to pluck only the pieces of state you want, it's easy to inject derived state as a render prop, while also making it easy to check for referential equality to prevent unecessary renders. Statty was only missing a dedicated logic unit.
+Statty's approach is great - by using a `select` prop to pluck only the pieces of state you want, it's easy to inject derived state as a render prop, while also making it easy to check for referential equality to prevent unecessary renders. Statty was only missing a dedicated logic unit.
 
-Thus, synaptik was born - marrying the concepts of Unstated and Statty in what looks to be a happy union. Hope y'all like it! 😎
+Thus, Synaptik was born - marrying the concepts of Unstated and Statty in what looks to be a happy union. Hope y'all like it! 😎
 
 ## Usage
 
@@ -62,7 +62,7 @@ import { Provider } from 'synaptik';
 import * as stores from './stores';
 
 /*
-  `stores` may look something like the following. The key's will be as
+  `stores` look something like the following. The keys are used as
   identifier's when accessing the store during render.
   {
     todos: TodoStore,
@@ -160,10 +160,10 @@ Make the vault available to `<Connect>` via context
 
 ##### Props
 
-- `stores` | object | required
+- `stores` | `object` | required
   A hash of stores. The key will be used as the accessor name when selecting state. The value is your Store constructor.
 
-- `vault` | object
+- `vault` | `object`
   Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
 
 - `logger` | `function(oldState: object, newState: object)`
