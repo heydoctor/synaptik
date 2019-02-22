@@ -69,7 +69,10 @@
     }
   },
   "lint-staged": {
-    "**/*.{js}": ["prettier --write", "git add"]
+    "**/*.{js}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
