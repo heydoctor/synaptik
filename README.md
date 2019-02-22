@@ -58,7 +58,7 @@ Next, wrap your application with the `Provider` and pass in your stores.
 
 ```jsx
 import { render } from 'react-dom';
-import { Provider as VaultProvider } from 'synaptik';
+import { Provider } from 'synaptik';
 import * as stores from './stores';
 
 /*
@@ -71,52 +71,50 @@ import * as stores from './stores';
 */
 
 const App = () => (
-  <VaultProvider stores={stores}>
+  <Provider stores={stores}>
     <Entry />
-  </VaultProvider>
+  </Provider>
 );
 
 render(<App />, window.root);
 ```
 
-Finally, drum roll please 🥁, use the `Connect` component to access our vault on render:
+Now, you can access your stores and your state with one of our convenient interfaces:
+
+#### `useSynapse` hook
 
 ```jsx
-import { Connect } from 'synaptik';
+import { useSynapse } from 'synaptik';
 
-export default () => (
-  <Connect
-    select={(stores) => ({
-      todos: stores.todos.state.entries,
-      input: stores.todos.state.input,
-      updateInput: stores.todos.updateInput,
-      addTodo: stores.todos.addTodo,
-    })}
-  >
-    {({ todos, input, updateInput, addTodo }) => (
-      <>
-        <ul>
-          {todos.map(todo => (
-            <li>{todo}</li>
-          ))}
-        </ul>
+function TodoList() {
+  const state = useSynapse(stores => ({
+    todos: stores.todos.state.entries,
+    input: stores.todos.state.input,
+    updateInput: stores.todos.updateInput,
+    addTodo: stores.todos.addTodo,
+  }));
 
-        <form onSubmit={addTodo}>
-          <input value={input} onChange={updateInput} />
-          <button type="submit" >
-            Submit
-          </button>
-        </form>
-      </>
-    )}
-  </Connect>
-)
+  return (
+    <>
+      <ul>
+        {state.todos.map(todo => (
+          <li>{todo}</li>
+        ))}
+      </ul>
+
+      <form onSubmit={state.addTodo}>
+        <input value={state.input} onChange={state.updateInput} />
+        <button type="submit">
+          Submit
+        </button>
+      </form>
+    </>
+  )
+}
 ```
 
-You've done it! You have your first todo app up and running 3 simple steps.
-
-## `@connect`
-Use the connect [HOC](https://reactjs.org/docs/higher-order-components.html) to inject your state as props. This is particuarly useful when you need to access props in your component methods.
+#### `@connect` decorator/HOC
+> Particuarly useful when you need to access props in your component methods.
 
 ```jsx
 import React, { Component } from 'react';
@@ -152,38 +150,7 @@ export default class TodoList extends Component {
 }
 ```
 
-## `useSynapse`
-We also expose a hook to easily access your stores in functional components.
-
-```jsx
-import { useSynapse } from 'synaptik';
-
-function TodoList() {
-  const state = useSynapse(stores => ({
-    todos: stores.todos.state.entries,
-    input: stores.todos.state.input,
-    updateInput: stores.todos.updateInput,
-    addTodo: stores.todos.addTodo,
-  }));
-
-  return (
-    <>
-      <ul>
-        {state.todos.map(todo => (
-          <li>{todo}</li>
-        ))}
-      </ul>
-
-      <form onSubmit={state.addTodo}>
-        <input value={state.input} onChange={state.updateInput} />
-        <button type="submit">
-          Submit
-        </button>
-      </form>
-    </>
-  )
-}
-```
+You've done it! You have your first todo app up and running 3 simple steps.
 
 ## Docs
 
@@ -191,25 +158,16 @@ function TodoList() {
 
 Make the vault available to `<Connect>` via context
 
-#### props
+##### Props
 
-##### `stores`
+- `stores` | object | required
+  A hash of stores. The key will be used as the accessor name when selecting state. The value is your Store constructor.
 
-> `object` | required
+- `vault` | object
+  Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
 
-A hash of stores. The key will be used as the accessor name when selecting state. The value is your Store constructor.
-
-##### `vault`
-
-> `object`
-
-Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
-
-##### `logger`
-
-> `function(oldState: object, newState: object)`
-
-Use the inspector prop during development to log state changes.
+- `logger` | `function(oldState: object, newState: object)`
+  Use the inspector prop during development to log state changes.
 
 `synaptik` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug).
 
@@ -224,52 +182,32 @@ import logger from 'synaptik/logger';
 />
 ```
 
-### `<Connect>`
-
-Connect is a PureComponent that observes pieces of state and re-renders only when those pieces of state update.
-
-#### props
-
-##### `select`
-
-> `function(stores: object, state: object) | defaults to s => s | returns object`
-
-Selects the slice of the state needed by the children components.
-
-##### `lifecycle`
-
-> `object`
-
-Access lifecycle methods of `<Connect>`. Each method has the same signature as `select` - so they will be passed `stores` and `state`. Comes with support for:
-- `didMount`
-- `didUpdate`
-- `willUnmount`
-
-Often, we need to do work in the lifecycle methods but that can be difficult when using functional components. `lifecycle` makes it easy to kick off async work when mounting or performing cleanup when unmounting.
+### `connect(selector)`
+- `selector(stores): StateSlice`
 
 ```jsx
-<Connect
-  select={() => ({})}
-  lifecycle={{
-    didMount(stores) {
-      stores.users.fetch(id);
-    },
-    willUnmount(stores) {
-      stores.users.cleanup();
-    }
-  }}
-/>
+@connect(stores => ({
+  counter: stores.count.state.counter,
+}))
+class App extends Component {
+  render() {
+    return <div>{this.props.counter}</div>
+  }
+}
 ```
 
-##### `render`
-
-> `function(state: object)` | required
-
-The render fn is passed the observed state returned by `select`. You can also use a child function.
-
 ### `useSynapse(selector)`
-
 - `selector(stores): StateSlice`
+
+```jsx
+function App() {
+  const state = useSynapse(stores => ({
+    counter: stores.counter.state.counter,
+  }));
+
+  return <div>{state.counter}</div>
+}
+```
 
 ## LICENSE
 [MIT License](LICENSE) © [Kyle Alwyn](kylealwyn.com)
