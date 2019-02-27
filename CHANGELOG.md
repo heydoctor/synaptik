@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/kylealwyn/synaptik/compare/v1.1.0...v1.2.0) (2019-02-27)
+
+
+### Features
+
+* hook support via useSynapse ([#7](https://github.com/kylealwyn/synaptik/issues/7)) ([3dcb379](https://github.com/kylealwyn/synaptik/commit/3dcb379))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/kylealwyn/synaptik/compare/v1.0.1...v1.1.0) (2019-01-08)
 
