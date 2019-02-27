@@ -62,7 +62,7 @@ import { Provider } from 'synaptik';
 import * as stores from './stores';
 
 /*
-  `stores` look something like the following. The keys are used as
+  `stores` look something like the following. Keys are used as
   identifier's when accessing the store during render.
   {
     todos: TodoStore,
@@ -113,43 +113,6 @@ function TodoList() {
 }
 ```
 
-#### `@connect` decorator/HOC
-> Particuarly useful when you need to access props in your component methods.
-
-```jsx
-import React, { Component } from 'react';
-import { connect } from 'synaptik';
-
-@connect((stores) => ({
-  todos: stores.todos.state.entries,
-  input: stores.todos.state.input,
-  updateInput: stores.todos.updateInput,
-  addTodo: stores.todos.addTodo,
-}))
-export default class TodoList extends Component {
-  render() {
-    const { todos, input, updateInput, addTodo } = this.props;
-
-    return (
-      <>
-        <ul>
-          {todos.map(todo => (
-            <li>{todo}</li>
-          ))}
-        </ul>
-
-        <form onSubmit={addTodo}>
-          <input value={input} onChange={updateInput} />
-          <button type="submit">
-            Submit
-          </button>
-        </form>
-      </>
-    )
-  }
-}
-```
-
 You've done it! You have your first todo app up and running 3 simple steps.
 
 ## Docs
@@ -180,20 +143,6 @@ import logger from 'synaptik/logger';
   }}
   logger={logger}
 />
-```
-
-### `connect(selector)`
-- `selector(stores): StateSlice`
-
-```jsx
-@connect(stores => ({
-  counter: stores.count.state.counter,
-}))
-class App extends Component {
-  render() {
-    return <div>{this.props.counter}</div>
-  }
-}
 ```
 
 ### `useSynapse(selector)`
