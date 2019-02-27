@@ -1,37 +1,21 @@
-import { Store } from '../../src/synaptik';
+import { Store } from '../../src';
 
 export default class TodoStore extends Store {
   state = {
-    input: '',
-    entries: [],
+    todos: [],
   };
 
-  updateInput = event => {
+  addTodo = todo => {
     this.setState({
-      input: event.target.value,
-    });
-  };
-
-  addTodo = event => {
-    event.preventDefault();
-
-    if (!this.state.input) {
-      return;
-    }
-
-    this.setState({
-      input: '',
-      entries: [...this.state.entries, this.state.input],
+      todos: [...this.state.todos, todo],
     });
   };
 
   deleteTodo = index => {
     this.setState({
-      entries: this.state.entries.filter((e, i) => {
+      todos: this.state.todos.filter((e, i) => {
         return i !== index;
       }),
     });
   };
-
-  getSortedTodos() {}
 }

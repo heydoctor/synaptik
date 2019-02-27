@@ -1,65 +1,62 @@
-import * as synaptik from '../src/synaptik';
+import React from 'react';
+import { render,testHook, act, cleanup }  from 'react-testing-library';
+import 'jest-dom/extend-expect'
+import * as synaptik from '../src';
 
-class TestStore extends synaptik.Store {
+class CounterStore extends synaptik.Store {
   state = {
     counter: 0,
   };
+  increment() {
+    this.setState({ counter: this.state.counter + 1, })
+  }
 }
 
-let vault;
+let synapse = new synaptik.Synapse({ counter: CounterStore });
 beforeEach(() => {
-  vault = new synaptik.Vault();
-});
+  synapse = new synaptik.Synapse({ counter: CounterStore });
+})
+afterEach(cleanup);
 
-describe('createVault', () => {
-  test('returns a vault instance', () => {
-    let v = synaptik.createVault({
-      test: TestStore
-    });
-
-    expect(v).toBeInstanceOf(synaptik.Vault);
-  });
-});
-
-describe('Vault', () => {
+describe('Synapse', () => {
   test('logger', () => {
     const logger = jest.fn();
-    const vault = new synaptik.Vault({ logger });
+    const synapse = new synaptik.Synapse({}, { logger });
     // logs by default
-    vault.updateState();
+    synapse.updateState();
     expect(logger).toHaveBeenCalled();
 
     logger.mockReset();
 
     // ignore logs
-    vault.updateState(null, null, { log: false });
+    synapse.updateState(null, null, { log: false });
     expect(logger).not.toHaveBeenCalled();
   });
 
   test('updating state', () => {
-    vault.updateState('test', {
+    synapse.updateState('test', {
       counter: 1,
     });
-    const newState = vault.getState();
+    const newState = synapse.getState();
     expect(newState.test.counter).toEqual(1);
   });
 
   test('subscriptions', () => {
     const spy = jest.fn();
 
-    // Subscribe to the vault
-    const subscription = vault.subscribe(spy);
-    vault.updateState('test', {
+    // Subscribe to the synapse
+    const subscription = synapse.subscribe(spy);
+    synapse.updateState('test', {
       counter: 1,
     });
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(vault.__state);
+    expect(spy).toHaveBeenCalledWith(synapse.state);
 
 
-    // Unsubscribe to the vault
+    // Unsubscribe to the synapse
     subscription();
 
-    vault.updateState('test', {
+    synapse.updateState('test', {
       counter: 2,
     });
 
@@ -71,31 +68,53 @@ describe('Store', () => {
   let store;
 
   beforeEach(() => {
-    store = new TestStore('test', vault);
+    store = new CounterStore('test', synapse);
   });
 
-  test('requires id and vault', () => {
-    expect(() => new TestStore()).toThrowErrorMatchingSnapshot();
-    expect(() => new TestStore('test')).toThrowErrorMatchingSnapshot();
+  test('requires id and synapse', () => {
+    expect(() => new CounterStore()).toThrowErrorMatchingSnapshot();
+    expect(() => new CounterStore('test')).toThrowErrorMatchingSnapshot();
   });
 
-  test('setState returns a promise', () => {
-    const promise = store.setState({});
-    expect(typeof promise.then).toEqual('function');
-  });
-
-  test('setState can take an updater function', async () => {
+  test('setState can take an updater function', () => {
     const spy = jest.fn().mockImplementationOnce(() => ({}));
-    const promise = await store.setState(spy);
+    store.setState(spy);
     expect(spy).toHaveBeenCalledWith(store.state);
   });
 
-  test('setState calls vault.updateState', async () => {
+  test('setState calls synapse.updateState', () => {
     const spy = jest.fn().mockImplementationOnce(() => ({}));
-    vault.updateState = jest.fn();
-    await store.setState(spy);
-    expect(vault.updateState).toHaveBeenCalledWith(store.id, store.state, {
+    synapse.updateState = jest.fn();
+    store.setState(spy);
+    expect(synapse.updateState).toHaveBeenCalledWith(store.id, store.state, {
       log: true,
     });
   });
 });
+
+describe('useSynapse', () => {
+  const Counter = () => {
+    const state = synaptik.useSynapse(({ counter }) => ({ counter: counter.state.counter }))
+    return (
+      <div>Counter: {state.counter}</div>
+    )
+  }
+
+  const App = () => (
+    <synaptik.Provider synapse={synapse}>
+      <Counter />
+    </synaptik.Provider>
+  )
+
+  test('should return correct state', () => {
+    const { getByText, rerender } = render(<App />);
+
+    expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 0')
+
+    act(() => {
+      synapse.stores.counter.increment()
+    })
+
+    expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 1')
+  })
+})
