@@ -3,177 +3,177 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 <a name="1.2.0"></a>
-# [1.2.0](https://github.com/kylealwyn/synaptik/compare/v1.1.0...v1.2.0) (2019-02-27)
+# [1.2.0](https://github.com/sappira-inc/synaptik/compare/v1.1.0...v1.2.0) (2019-02-27)
 
 
 ### Features
 
-* hook support via useSynapse ([#7](https://github.com/kylealwyn/synaptik/issues/7)) ([3dcb379](https://github.com/kylealwyn/synaptik/commit/3dcb379))
+* hook support via useSynapse ([#7](https://github.com/sappira-inc/synaptik/issues/7)) ([3dcb379](https://github.com/sappira-inc/synaptik/commit/3dcb379))
 
 
 
 <a name="1.1.0"></a>
-# [1.1.0](https://github.com/kylealwyn/synaptik/compare/v1.0.1...v1.1.0) (2019-01-08)
+# [1.1.0](https://github.com/sappira-inc/synaptik/compare/v1.0.1...v1.1.0) (2019-01-08)
 
 
 ### Features
 
-* **Connect:** Convert back to PureComponent ([ec5466d](https://github.com/kylealwyn/synaptik/commit/ec5466d))
+* **Connect:** Convert back to PureComponent ([ec5466d](https://github.com/sappira-inc/synaptik/commit/ec5466d))
 
 
 
 <a name="0.6.0"></a>
-# [0.6.0](https://github.com/kylealwyn/synaptik/compare/v0.5.1...v0.6.0) (2018-10-13)
+# [0.6.0](https://github.com/sappira-inc/synaptik/compare/v0.5.1...v0.6.0) (2018-10-13)
 
 
 ### Bug Fixes
 
-* **Store:** Set state to empty object on construction ([5a7c5a5](https://github.com/kylealwyn/synaptik/commit/5a7c5a5))
+* **Store:** Set state to empty object on construction ([5a7c5a5](https://github.com/sappira-inc/synaptik/commit/5a7c5a5))
 
 
 ### Features
 
-* **Connect:** Access props as second argument in HOC select method ([#5](https://github.com/kylealwyn/synaptik/issues/5)) ([850d325](https://github.com/kylealwyn/synaptik/commit/850d325))
+* **Connect:** Access props as second argument in HOC select method ([#5](https://github.com/sappira-inc/synaptik/issues/5)) ([850d325](https://github.com/sappira-inc/synaptik/commit/850d325))
 
 
 
 <a name="0.5.1"></a>
-## [0.5.1](https://github.com/kylealwyn/synaptik/compare/v0.5.0...v0.5.1) (2018-09-10)
+## [0.5.1](https://github.com/sappira-inc/synaptik/compare/v0.5.0...v0.5.1) (2018-09-10)
 
 
 ### Bug Fixes
 
-* **Connect:** Pass props to all methods ([587356a](https://github.com/kylealwyn/synaptik/commit/587356a))
+* **Connect:** Pass props to all methods ([587356a](https://github.com/sappira-inc/synaptik/commit/587356a))
 
 
 
 <a name="0.5.0"></a>
-# [0.5.0](https://github.com/kylealwyn/synaptik/compare/v0.4.3...v0.5.0) (2018-09-10)
+# [0.5.0](https://github.com/sappira-inc/synaptik/compare/v0.4.3...v0.5.0) (2018-09-10)
 
 
 ### Bug Fixes
 
-* add tests for Vault and Store ([4b8b502](https://github.com/kylealwyn/synaptik/commit/4b8b502))
+* add tests for Vault and Store ([4b8b502](https://github.com/sappira-inc/synaptik/commit/4b8b502))
 
 
 ### Features
 
-* New connect hoc ([4f264f4](https://github.com/kylealwyn/synaptik/commit/4f264f4))
+* New connect hoc ([4f264f4](https://github.com/sappira-inc/synaptik/commit/4f264f4))
 
 
 
 <a name="0.4.3"></a>
-## [0.4.3](https://github.com/kylealwyn/synaptik/compare/v0.4.2...v0.4.3) (2018-06-04)
+## [0.4.3](https://github.com/sappira-inc/synaptik/compare/v0.4.2...v0.4.3) (2018-06-04)
 
 
 ### Bug Fixes
 
-* Skip logging state change in initial Store construction ([f46abc1](https://github.com/kylealwyn/synaptik/commit/f46abc1))
+* Skip logging state change in initial Store construction ([f46abc1](https://github.com/sappira-inc/synaptik/commit/f46abc1))
 
 
 
 <a name="0.4.2"></a>
-## [0.4.2](https://github.com/kylealwyn/synaptik/compare/v0.4.1...v0.4.2) (2018-04-30)
+## [0.4.2](https://github.com/sappira-inc/synaptik/compare/v0.4.1...v0.4.2) (2018-04-30)
 
 
 ### Bug Fixes
 
-* **logger:** collapse log groups ([6058750](https://github.com/kylealwyn/synaptik/commit/6058750))
+* **logger:** collapse log groups ([6058750](https://github.com/sappira-inc/synaptik/commit/6058750))
 
 
 
 <a name="0.4.1"></a>
-## [0.4.1](https://github.com/kylealwyn/synaptik/compare/v0.4.0...v0.4.1) (2018-04-30)
+## [0.4.1](https://github.com/sappira-inc/synaptik/compare/v0.4.0...v0.4.1) (2018-04-30)
 
 
 ### Bug Fixes
 
-* **logger:** use cjs ([fa04097](https://github.com/kylealwyn/synaptik/commit/fa04097))
+* **logger:** use cjs ([fa04097](https://github.com/sappira-inc/synaptik/commit/fa04097))
 
 
 
 <a name="0.4.0"></a>
-# [0.4.0](https://github.com/kylealwyn/synaptik/compare/v0.3.0...v0.4.0) (2018-04-30)
+# [0.4.0](https://github.com/sappira-inc/synaptik/compare/v0.3.0...v0.4.0) (2018-04-30)
 
 
 ### Bug Fixes
 
-* **Connect:** remove unneceessary call to getObservedState ([b76a692](https://github.com/kylealwyn/synaptik/commit/b76a692))
-* **Vault:** respect log flag ([988c107](https://github.com/kylealwyn/synaptik/commit/988c107))
+* **Connect:** remove unneceessary call to getObservedState ([b76a692](https://github.com/sappira-inc/synaptik/commit/b76a692))
+* **Vault:** respect log flag ([988c107](https://github.com/sappira-inc/synaptik/commit/988c107))
 
 
 ### Features
 
-* **Provider:** pass in a logger function instead of monkey patching Vault and Store prototypes ([6f267be](https://github.com/kylealwyn/synaptik/commit/6f267be))
-* **Store:** return a promise from setState ([a49d451](https://github.com/kylealwyn/synaptik/commit/a49d451))
+* **Provider:** pass in a logger function instead of monkey patching Vault and Store prototypes ([6f267be](https://github.com/sappira-inc/synaptik/commit/6f267be))
+* **Store:** return a promise from setState ([a49d451](https://github.com/sappira-inc/synaptik/commit/a49d451))
 
 
 
 <a name="0.3.0"></a>
-# [0.3.0](https://github.com/kylealwyn/synaptik/compare/v0.2.6...v0.3.0) (2018-04-28)
+# [0.3.0](https://github.com/sappira-inc/synaptik/compare/v0.2.6...v0.3.0) (2018-04-28)
 
 
 ### Features
 
-* **Connect:** Connect extends from PureComponent ([6e5678b](https://github.com/kylealwyn/synaptik/commit/6e5678b))
+* **Connect:** Connect extends from PureComponent ([6e5678b](https://github.com/sappira-inc/synaptik/commit/6e5678b))
 
 
 
 <a name="0.2.6"></a>
-## [0.2.6](https://github.com/kylealwyn/synaptik/compare/v0.2.5...v0.2.6) (2018-04-28)
+## [0.2.6](https://github.com/sappira-inc/synaptik/compare/v0.2.5...v0.2.6) (2018-04-28)
 
 
 ### Bug Fixes
 
-* undo that ([8fa2789](https://github.com/kylealwyn/synaptik/commit/8fa2789))
+* undo that ([8fa2789](https://github.com/sappira-inc/synaptik/commit/8fa2789))
 
 
 
 <a name="0.2.5"></a>
-## [0.2.5](https://github.com/kylealwyn/synaptik/compare/v0.2.4...v0.2.5) (2018-04-28)
+## [0.2.5](https://github.com/sappira-inc/synaptik/compare/v0.2.4...v0.2.5) (2018-04-28)
 
 
 
 <a name="0.2.4"></a>
-## [0.2.4](https://github.com/kylealwyn/synaptik/compare/v0.2.3...v0.2.4) (2018-04-28)
+## [0.2.4](https://github.com/sappira-inc/synaptik/compare/v0.2.3...v0.2.4) (2018-04-28)
 
 
 ### Bug Fixes
 
-* Connect should update when props change ([ec0c009](https://github.com/kylealwyn/synaptik/commit/ec0c009))
+* Connect should update when props change ([ec0c009](https://github.com/sappira-inc/synaptik/commit/ec0c009))
 
 
 
 <a name="0.2.3"></a>
-## [0.2.3](https://github.com/kylealwyn/synaptik/compare/v0.2.2...v0.2.3) (2018-04-28)
+## [0.2.3](https://github.com/sappira-inc/synaptik/compare/v0.2.2...v0.2.3) (2018-04-28)
 
 
 ### Bug Fixes
 
-* export Vault ([7e6c7e5](https://github.com/kylealwyn/synaptik/commit/7e6c7e5))
+* export Vault ([7e6c7e5](https://github.com/sappira-inc/synaptik/commit/7e6c7e5))
 
 
 
 <a name="0.2.2"></a>
 
-## [0.2.2](https://github.com/kylealwyn/synaptik/compare/v0.2.1...v0.2.2) (2018-04-28)
+## [0.2.2](https://github.com/sappira-inc/synaptik/compare/v0.2.1...v0.2.2) (2018-04-28)
 
 ### Bug Fixes
 
-* add debug module ([da3e7b8](https://github.com/kylealwyn/synaptik/commit/da3e7b8))
+* add debug module ([da3e7b8](https://github.com/sappira-inc/synaptik/commit/da3e7b8))
 
 <a name="0.2.1"></a>
 
-## [0.2.1](https://github.com/kylealwyn/synaptik/compare/v0.2.0...v0.2.1) (2018-04-28)
+## [0.2.1](https://github.com/sappira-inc/synaptik/compare/v0.2.0...v0.2.1) (2018-04-28)
 
 <a name="0.2.0"></a>
 
-# [0.2.0](https://github.com/kylealwyn/synaptik/compare/v0.1.1...v0.2.0) (2018-04-28)
+# [0.2.0](https://github.com/sappira-inc/synaptik/compare/v0.1.1...v0.2.0) (2018-04-28)
 
 ### Features
 
-* consolidate into one file ([c999364](https://github.com/kylealwyn/synaptik/commit/c999364))
-* **Store:** make setState run async ([5a876ba](https://github.com/kylealwyn/synaptik/commit/5a876ba))
+* consolidate into one file ([c999364](https://github.com/sappira-inc/synaptik/commit/c999364))
+* **Store:** make setState run async ([5a876ba](https://github.com/sappira-inc/synaptik/commit/5a876ba))
 
 <a name="0.1.1"></a>
 
