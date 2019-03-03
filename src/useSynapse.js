@@ -14,7 +14,7 @@ export default function useSynapse(selector) {
         setState(nextState);
       }
     });
-  }, []);
+  });
 
   return state;
 }

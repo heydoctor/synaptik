@@ -1,4 +1,5 @@
 import todos from './todos';
 import weather from './weather';
+import counter from './counter';
 
-export { todos, weather };
+export { counter, todos, weather };

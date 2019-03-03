@@ -17,12 +17,12 @@ export default () => {
 
   return (
     <div>
-      {console.log('Rendering ToDo List')}
+      {console.info('Rendering ToDo List')}
       <h2>ToDo List</h2>
 
       <ul>
         {state.todos.map((entry, i) => (
-          <li key={entry}>
+          <li key={i}>
             {entry}
             &nbsp;
             <span onClick={() => state.deleteTodo(i)}>x</span>

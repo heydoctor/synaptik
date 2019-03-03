@@ -12,10 +12,10 @@ export default function WeatherForecast() {
 
   return (
     <div>
-      {console.log('Rendering WeatherForecast')}
+      {console.info('Rendering WeatherForecast')}
       <h2>Weather Forecast</h2>
 
-      {loading || !forecast.length ? (
+      {loading ? (
         <span>Loading...</span>
       ) : (
         <div>
