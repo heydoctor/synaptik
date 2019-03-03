@@ -15,10 +15,10 @@ const enhancer = connect(
 
 export default enhancer(({ forecast, loading }) => (
   <div>
-    {console.log('Rendering WeatherForecast')}
+    {console.info('Rendering WeatherForecast')}
     <h2>Weather Forecast</h2>
 
-    {loading || !forecast || !forecast.length ? (
+    {loading ? (
       <span>Loading...</span>
     ) : (
       <div>

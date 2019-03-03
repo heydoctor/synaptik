@@ -2,27 +2,23 @@ import { Store } from '../../src';
 import immer from 'immer';
 
 export default class WeatherStore extends Store {
-  state = {
+  static initialState = {
     loading: false,
     forecast: [],
   };
 
   load = () => {
-    this.setState({ loading: true });
+    this.state.loading = true;
 
     setTimeout(() => {
-      this.setState(
-        immer(draft => {
-          draft.loading = false;
-          draft.forecast = [
-            {
-              date: 'today',
-              high: 75,
-              low: 70,
-            },
-          ];
-        })
-      );
+      this.state.loading = false;
+      this.state.forecast = [
+        {
+          date: 'today',
+          high: 75,
+          low: 70,
+        },
+      ]
     }, 1500);
   };
 }
