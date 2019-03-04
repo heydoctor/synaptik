@@ -4,7 +4,7 @@
   "description": "Yet another state management library",
   "main": "lib/synaptik.js",
   "module": "lib/synaptik.es.js",
-  "repository": "https://github.com/kylealwyn/synaptik",
+  "repository": "https://github.com/sappira-inc/synaptik",
   "author": "Kyle Alwyn <kjalwyn@gmail.com>",
   "license": "MIT",
   "private": false,
