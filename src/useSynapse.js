@@ -7,12 +7,17 @@ export default function useSynapse(selector) {
   const select = () => selector(synapse.stores);
   const [state, setState] = useState(select());
 
+  const updateStateIfChanged = () => {
+    const nextState = select();
+    if (!shallowEqual(nextState, state)) {
+      setState(nextState);
+    }
+  }
+
   useEffect(() => {
+    updateStateIfChanged();
     return synapse.subscribe(() => {
-      const nextState = select();
-      if (!shallowEqual(nextState, state)) {
-        setState(nextState);
-      }
+      updateStateIfChanged()
     });
   });
 
