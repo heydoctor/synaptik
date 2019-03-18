@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/sappira-inc/synaptik/compare/v1.2.1...v1.2.2) (2019-03-18)
+
+
+### Bug Fixes
+
+* **useSynapse:** Update to latest state before re-subscribing ([#12](https://github.com/sappira-inc/synaptik/issues/12)) ([48df6cd](https://github.com/sappira-inc/synaptik/commit/48df6cd))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/sappira-inc/synaptik/compare/v1.2.0...v1.2.1) (2019-03-04)
 
