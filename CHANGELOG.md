@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.3"></a>
+## [1.2.3](https://github.com/sappira-inc/synaptik/compare/v1.2.2...v1.2.3) (2019-03-19)
+
+
+### Bug Fixes
+
+* **useSynapse:** Fix infinite loop when selector returns impure object ([#13](https://github.com/sappira-inc/synaptik/issues/13)) ([ab7c850](https://github.com/sappira-inc/synaptik/commit/ab7c850))
+
+
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/sappira-inc/synaptik/compare/v1.2.1...v1.2.2) (2019-03-18)
 
