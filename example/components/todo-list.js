@@ -7,7 +7,6 @@ export default () => {
     todos: todos.state.todos,
     addTodo: todos.addTodo,
     deleteTodo: todos.deleteTodo,
-    randomImpureFunction: () => {}
   }));
 
   const onSubmit = e => {
