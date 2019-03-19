@@ -4,6 +4,7 @@ import { Provider } from '../src';
 import * as stores from './stores';
 import TodoList from './components/todo-list';
 import WeatherForecast from './components/weather-forecast';
+import Counter from './components/counter';
 import logger from '../logger';
 
 const App = () => (
@@ -11,6 +12,7 @@ const App = () => (
     <Fragment>
       <TodoList />
       <WeatherForecast zipCode={94133} />
+      <Counter />
     </Fragment>
   </Provider>
 );
