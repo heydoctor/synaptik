@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useLayoutEffect } from 'react';
 import Context from './Context';
 import shallowEqual from './shallow-equal';
 
@@ -7,17 +7,12 @@ export default function useSynapse(selector) {
   const select = () => selector(synapse.stores);
   const [state, setState] = useState(select());
 
-  const updateStateIfChanged = () => {
-    const nextState = select();
-    if (!shallowEqual(nextState, state)) {
-      setState(nextState);
-    }
-  }
-
-  useEffect(() => {
-    updateStateIfChanged();
+  useLayoutEffect(() => {
     return synapse.subscribe(() => {
-      updateStateIfChanged()
+      const nextState = select();
+      if (!shallowEqual(nextState, state)) {
+        setState(nextState);
+      }
     });
   });
 
