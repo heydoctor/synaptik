@@ -5,7 +5,7 @@ _The state management library you've been waiting for_
 [![npm](https://img.shields.io/npm/v/synaptik.svg)](https://www.npmjs.com/package/synaptik)
 [![npm](https://img.shields.io/npm/dm/synaptik.svg)](https://npm-stat.com/charts.html?package=synaptik&from=2017-05-19)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-brightgreen.svg)](http://standardjs.com/)
-[![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/heydoctor/synaptik/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/heydoctor/synaptik/blob/master/LICENSE) [![Greenkeeper badge](https://badges.greenkeeper.io/heydoctor/synaptik.svg)](https://greenkeeper.io/)
 
 ## Table of Contents
 1. [Why synaptik?](#why-synaptik)
