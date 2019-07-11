@@ -1,10 +1,17 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+import get from 'lodash.get';
 import Context from './Context';
 import shallowEqual from './shallow-equal';
 
 export default function useSynapse(selector, dependencies = []) {
   const synapse = useContext(Context);
-  const select = () => selector(synapse.stores);
+  const select = () =>
+    Array.isArray(selector)
+      ? selector.reduce((state, key) => {
+          state.push(get(synapse.stores, key));
+          return state;
+        }, [])
+      : selector(synapse.stores);
   const [state, setState] = useState(select());
 
   // By default, our effect only fires on mount and unmount, meaning it won't see the

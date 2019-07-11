@@ -1,21 +1,27 @@
 import React from 'react';
-import { render,testHook, act, cleanup }  from 'react-testing-library';
-import 'jest-dom/extend-expect'
+import { render, testHook, act, cleanup } from 'react-testing-library';
+import 'jest-dom/extend-expect';
 import * as synaptik from '../src';
 
-class CounterStore extends synaptik.Store {
+class Store extends synaptik.Store {
   state = {
     counter: 0,
+    favorites: {
+      avenger: 'Iron Man',
+    },
   };
-  increment() {
-    this.setState({ counter: this.state.counter + 1, })
+
+  incrementCounter() {
+    this.setState({ counter: this.state.counter + 1 });
   }
 }
 
-let synapse = new synaptik.Synapse({ counter: CounterStore });
+let synapse = new synaptik.Synapse({ testStore: Store });
+
 beforeEach(() => {
-  synapse = new synaptik.Synapse({ counter: CounterStore });
-})
+  synapse = new synaptik.Synapse({ testStore: Store });
+});
+
 afterEach(cleanup);
 
 describe('Synapse', () => {
@@ -52,7 +58,6 @@ describe('Synapse', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(synapse.state);
 
-
     // Unsubscribe to the synapse
     subscription();
 
@@ -68,12 +73,12 @@ describe('Store', () => {
   let store;
 
   beforeEach(() => {
-    store = new CounterStore('test', synapse);
+    store = new Store('test', synapse);
   });
 
   test('requires id and synapse', () => {
-    expect(() => new CounterStore()).toThrowErrorMatchingSnapshot();
-    expect(() => new CounterStore('test')).toThrowErrorMatchingSnapshot();
+    expect(() => new Store()).toThrowErrorMatchingSnapshot();
+    expect(() => new Store('test')).toThrowErrorMatchingSnapshot();
   });
 
   test('setState can take an updater function', () => {
@@ -93,28 +98,68 @@ describe('Store', () => {
 });
 
 describe('useSynapse', () => {
-  const Counter = () => {
-    const state = synaptik.useSynapse(({ counter }) => ({ counter: counter.state.counter }))
-    return (
-      <div>Counter: {state.counter}</div>
-    )
-  }
+  test('selects state using a selector function', () => {
+    const WithFunctionSelector = () => {
+      const { count, favoriteAvenger } = synaptik.useSynapse(
+        ({ testStore }) => ({
+          count: testStore.state.counter,
+          favoriteAvenger: testStore.state.favorites.avenger,
+        })
+      );
 
-  const App = () => (
-    <synaptik.Provider synapse={synapse}>
-      <Counter />
-    </synaptik.Provider>
-  )
+      return (
+        <>
+          <span>Count: {count}</span>
+          <span>Favorite Avenger: {favoriteAvenger}</span>
+        </>
+      );
+    };
 
-  test('should return correct state', () => {
-    const { getByText, rerender } = render(<App />);
+    const { getByText, rerender } = render(
+      <synaptik.Provider synapse={synapse}>
+        <WithFunctionSelector />
+      </synaptik.Provider>
+    );
 
-    expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 0')
+    expect(getByText(/^Count:/)).toHaveTextContent('Count: 0');
 
     act(() => {
-      synapse.stores.counter.increment()
-    })
+      synapse.stores.testStore.incrementCounter();
+    });
 
-    expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 1')
-  })
-})
+    expect(getByText(/^Count:/)).toHaveTextContent('Count: 1');
+  });
+
+  test('selects state using array of store keys', () => {
+    const WithArraySelector = () => {
+      const [count, favoriteAvenger] = synaptik.useSynapse([
+        'testStore.state.counter',
+        'testStore.state.favorites.avenger',
+      ]);
+
+      return (
+        <>
+          <span>Count: {count}</span>
+          <span>Favorite Avenger: {favoriteAvenger}</span>
+        </>
+      );
+    };
+
+    const { getByText, rerender } = render(
+      <synaptik.Provider synapse={synapse}>
+        <WithArraySelector />
+      </synaptik.Provider>
+    );
+
+    expect(getByText(/^Count:/)).toHaveTextContent('Count: 0');
+    expect(getByText(/^Favorite Avenger:/)).toHaveTextContent(
+      'Favorite Avenger: Iron Man'
+    );
+
+    act(() => {
+      synapse.stores.testStore.incrementCounter();
+    });
+
+    expect(getByText(/^Count:/)).toHaveTextContent('Count: 1');
+  });
+});

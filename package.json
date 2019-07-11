@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "bump": "standard-version",
-    "format": "prettier --write {src,example}/**/*.js",
+    "format": "prettier --write {src,example,test}/**/*.js",
     "test": "jest",
     "build": "npm-run-all clean rollup",
     "clean": "rimraf dist",
@@ -24,7 +24,8 @@
     "example": "parcel example/index.html"
   },
   "dependencies": {
-    "deep-object-diff": "^1.1.0"
+    "deep-object-diff": "^1.1.0",
+    "lodash.get": "^4.4.2"
   },
   "peerDependencies": {
     "prop-types": "^15.6.1",
