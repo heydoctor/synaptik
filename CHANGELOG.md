@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/sappira-inc/synaptik/compare/v1.1.0...v1.3.0) (2020-01-11)
+
+
+### Bug Fixes
+
+* **useSynapse:** Fix infinite loop when selector returns impure object ([#13](https://github.com/sappira-inc/synaptik/issues/13)) ([ab7c850](https://github.com/sappira-inc/synaptik/commit/ab7c850))
+* **useSynapse:** Run useEffect on every render ([#10](https://github.com/sappira-inc/synaptik/issues/10)) ([9ad6cdb](https://github.com/sappira-inc/synaptik/commit/9ad6cdb))
+* **useSynapse:** Update to latest state before re-subscribing ([#12](https://github.com/sappira-inc/synaptik/issues/12)) ([48df6cd](https://github.com/sappira-inc/synaptik/commit/48df6cd))
+* Move logger into src/ for proper bundling ([#18](https://github.com/sappira-inc/synaptik/issues/18)) ([5706404](https://github.com/sappira-inc/synaptik/commit/5706404))
+
+
+### Features
+
+* hook support via useSynapse ([#7](https://github.com/sappira-inc/synaptik/issues/7)) ([3dcb379](https://github.com/sappira-inc/synaptik/commit/3dcb379))
+
+
+
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/sappira-inc/synaptik/compare/v1.2.2...v1.2.3) (2019-03-19)
 
