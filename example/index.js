@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 import { render } from 'react-dom';
-import { Provider } from '../src';
+import { Provider, logger } from '../src';
 import * as stores from './stores';
 import TodoList from './components/todo-list';
 import WeatherForecast from './components/weather-forecast';
 import Counter from './components/counter';
-import logger from '../logger';
 
 const App = () => (
   <Provider stores={stores} logger={logger}>
