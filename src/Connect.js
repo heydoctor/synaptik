@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 
@@ -69,12 +69,9 @@ export default function Connect(props) {
   );
 }
 
-export function connect(selector, lifecycle = {}) {
-  return Component => {
-    return props => (
-      <Connect {...props} select={selector} lifecycle={lifecycle}>
-        {state => <Component {...state} {...props} />}
-      </Connect>
-    );
-  };
-}
+export const connect = (selector, lifecycle = {}) => Component =>
+  forwardRef((props, ref) => (
+    <Connect {...props} select={selector} lifecycle={lifecycle}>
+      {state => <Component {...state} {...props} ref={ref} />}
+    </Connect>
+  ));
