@@ -1,4 +1,5 @@
 # ⚡️ Synaptik
+
 _The state management library you've been waiting for_
 
 [![Build Status](https://travis-ci.org/heydoctor/synaptik.svg?branch=master)](https://travis-ci.org/heydoctor/synaptik) [![codecov](https://codecov.io/gh/heydoctor/synaptik/branch/master/graph/badge.svg)](https://codecov.io/gh/heydoctor/synaptik)
@@ -8,11 +9,13 @@ _The state management library you've been waiting for_
 [![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/heydoctor/synaptik/blob/master/LICENSE)
 
 ## Table of Contents
+
 1. [Why synaptik?](#why-synaptik)
 2. [Usage](#usage)
 3. [Docs](#docs)
 
 ## Why Synaptik?
+
 [Redux](https://github.com/reactjs/redux) is a great tool and undoubtedly helped push the web forward by providing a strong mental model around global state. Redux, however, does come with its flaws:
 
 1. Repetition. The boilerplate, just for the most simple task, has become wearisome.
@@ -42,7 +45,7 @@ export default class TodoStore extends Store {
 
   updateInput = input => {
     this.setState({ input });
-  }
+  };
 
   addTodo = todo => {
     // setState acts like React component's setState,
@@ -50,7 +53,7 @@ export default class TodoStore extends Store {
     this.setState({
       entries: [...this.state.entries, todo],
     });
-  }
+  };
 }
 ```
 
@@ -87,40 +90,39 @@ Now, you can access your stores and your state with one of our convenient interf
 import { useSynapse } from 'synaptik';
 
 function TodoList() {
-  const state = useSynapse(stores => ({
-    todos: stores.todos.state.entries,
-    input: stores.todos.state.input,
-    updateInput: stores.todos.updateInput,
-    addTodo: stores.todos.addTodo,
-  }));
+  const [todos, input, updateInput, addTodo] = useSynapse(({ todos }) => [
+    todos.state.entries,
+    todos.state.input,
+    todos.updateInput,
+    todos.addTodo,
+  ]);
 
   return (
     <>
       <ul>
-        {state.todos.map(todo => (
+        {todos.map(todo => (
           <li>{todo}</li>
         ))}
       </ul>
 
-      <form onSubmit={state.addTodo}>
-        <input value={state.input} onChange={state.updateInput} />
-        <button type="submit">
-          Submit
-        </button>
+      <form onSubmit={addTodo}>
+        <input value={input} onChange={updateInput} />
+        <button type="submit">Submit</button>
       </form>
     </>
-  )
+  );
 }
 ```
 
 #### `@connect` decorator/HOC
+
 > Particuarly useful when you need to access props in your component methods.
 
 ```jsx
 import React, { Component } from 'react';
 import { connect } from 'synaptik';
 
-@connect((stores) => ({
+@connect(stores => ({
   todos: stores.todos.state.entries,
   input: stores.todos.state.input,
   updateInput: stores.todos.updateInput,
@@ -140,12 +142,10 @@ export default class TodoList extends Component {
 
         <form onSubmit={addTodo}>
           <input value={input} onChange={updateInput} />
-          <button type="submit">
-            Submit
-          </button>
+          <button type="submit">Submit</button>
         </form>
       </>
-    )
+    );
   }
 }
 ```
@@ -179,10 +179,11 @@ import logger from 'synaptik/logger';
     todos: TodoStore,
   }}
   logger={logger}
-/>
+/>;
 ```
 
 ### `connect(selector)`
+
 - `selector(stores): StateSlice`
 
 ```jsx
@@ -191,12 +192,13 @@ import logger from 'synaptik/logger';
 }))
 class App extends Component {
   render() {
-    return <div>{this.props.counter}</div>
+    return <div>{this.props.counter}</div>;
   }
 }
 ```
 
 ### `useSynapse(selector)`
+
 - `selector(stores): StateSlice`
 
 ```jsx
@@ -205,9 +207,10 @@ function App() {
     counter: stores.counter.state.counter,
   }));
 
-  return <div>{state.counter}</div>
+  return <div>{state.counter}</div>;
 }
 ```
 
 ## LICENSE
-[MIT License](LICENSE) © [Sappira Inc.](sappira.com)
+
+[MIT License](LICENSE) © [HeyDoctor, LLC.](heydoctor.com)
