@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.2"></a>
+## [1.3.2](https://github.com/sappira-inc/synaptik/compare/v1.3.0...v1.3.2) (2020-04-21)
+
+
+### Bug Fixes
+
+* Forward ref in [@connect](https://github.com/connect) ([c199974](https://github.com/sappira-inc/synaptik/commit/c199974))
+
+
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://github.com/sappira-inc/synaptik/compare/v1.3.0...v1.3.1) (2020-02-07)
 
