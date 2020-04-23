@@ -163,7 +163,7 @@ Make the vault available to `<Connect>` via context
 - `stores` | `object` | required
   A hash of stores. The key will be used as the accessor name when selecting state. The value is your Store constructor.
 
-- `vault` | `object`
+- `synapse` | `object`
   Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
 
 - `logger` | `function(oldState: object, newState: object)`
