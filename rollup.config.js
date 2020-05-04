@@ -1,9 +1,10 @@
-import babel from 'rollup-plugin-babel';
+import typescript from '@wessberg/rollup-plugin-ts';
 import filesize from 'rollup-plugin-filesize';
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: [
     {
       file: pkg.main,
@@ -14,12 +15,10 @@ export default {
       format: 'es',
     },
   ],
-  external: [
-    ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.peerDependencies || {}),
-  ],
+  external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
   plugins: [
-    babel({ babelrc: true }),
-    filesize()
+    typescript(resolvedConfig => ({ ...resolvedConfig, target: 'es5' })),
+    terser(),
+    filesize(),
   ],
 };

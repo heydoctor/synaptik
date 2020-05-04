@@ -32,22 +32,26 @@ Thus, Synaptik was born - marrying the concepts of Unstated and Statty in what l
 
 ## Usage
 
-Begin by creating your first store, which extends from `Store`:
+Begin by creating your first store, which extends from `Store`.
 
-```js
+```ts
 import { Store } from 'synaptik';
+import { Stores } from 'app/lib/synaptik';
 
-export default class TodoStore extends Store {
-  state = {
+export default class TodoStore extends Store<TodoStore, Stores> {
+  state: {
+    input: string;
+    entries: string[];
+  } = {
     input: '',
     entries: [],
   };
 
-  updateInput = input => {
+  updateInput = (input: string) => {
     this.setState({ input });
   };
 
-  addTodo = todo => {
+  addTodo = (todo: string) => {
     // setState acts like React component's setState,
     // meaning that it runs asynchronously and can also be passed an updater function.
     this.setState({
@@ -57,12 +61,24 @@ export default class TodoStore extends Store {
 }
 ```
 
-Next, wrap your application with the `Provider` and pass in your stores.
+Next, create a file that will export your hooks and types.
 
-```jsx
-import { render } from 'react-dom';
-import { Provider } from 'synaptik';
+```tsx
+// app/lib/synaptik.ts
+import { createSynaptik, Synapse } from 'synaptik';
 import * as stores from './stores';
+
+const { Provider, useSynapse, connect } = createSynaptik(new Synapse(stores));
+
+export type Stores = typeof stores;
+export { Provider, useSynapse, connect };
+```
+
+Lastly, wrap your application with the `Provider`.
+
+```tsx
+import { render } from 'react-dom';
+import { Provider } from 'app/lib/synaptik';
 
 /*
   `stores` look something like the following. The keys are used as
@@ -74,7 +90,7 @@ import * as stores from './stores';
 */
 
 const App = () => (
-  <Provider stores={stores}>
+  <Provider>
     <Entry />
   </Provider>
 );
@@ -82,20 +98,18 @@ const App = () => (
 render(<App />, window.root);
 ```
 
-Now, you can access your stores and your state with one of our convenient interfaces:
+Now, you can access your stores and your state with one of our convenient interfaces with full type safety:
 
 #### `useSynapse` hook
 
-```jsx
-import { useSynapse } from 'synaptik';
+```tsx
+import { useSynapse } from 'app/lib/synaptik';
 
 function TodoList() {
-  const [todos, input, updateInput, addTodo] = useSynapse(({ todos }) => [
-    todos.state.entries,
-    todos.state.input,
-    todos.updateInput,
-    todos.addTodo,
-  ]);
+  const [todos, input, updateInput, addTodo] = useSynapse(
+    ({ todos }) =>
+      [todos.state.entries, todos.state.input, todos.updateInput, todos.addTodo] as const
+  );
 
   return (
     <>
@@ -120,13 +134,13 @@ function TodoList() {
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'synaptik';
+import { connect } from 'app/lib/synaptik';
 
-@connect(stores => ({
-  todos: stores.todos.state.entries,
-  input: stores.todos.state.input,
-  updateInput: stores.todos.updateInput,
-  addTodo: stores.todos.addTodo,
+@connect(({ todos }) => ({
+  todos: todos.state.entries,
+  input: todos.state.input,
+  updateInput: todos.updateInput,
+  addTodo: todos.addTodo,
 }))
 export default class TodoList extends Component {
   render() {
@@ -154,33 +168,11 @@ You've done it! You have your first todo app up and running 3 simple steps.
 
 ## Docs
 
-### `<Provider>`
-
-Make the vault available to `<Connect>` via context
+### `createSynaptik(synapseInstance)`
 
 ##### Props
 
-- `stores` | `object` | required
-  A hash of stores. The key will be used as the accessor name when selecting state. The value is your Store constructor.
-
-- `synapse` | `object`
-  Alternatively, you can pass in a preinstantiated vault. This is helpful during testing.
-
-- `logger` | `function(oldState: object, newState: object)`
-  Use the inspector prop during development to log state changes.
-
-`synaptik` comes with a default logger inspired by [unstated-debug](https://github.com/sindresorhus/unstated-debug).
-
-```jsx
-import logger from 'synaptik/logger';
-
-<Provider
-  stores={{
-    todos: TodoStore,
-  }}
-  logger={logger}
-/>;
-```
+// TODO: finish docs
 
 ### `connect(selector)`
 
@@ -203,9 +195,7 @@ class App extends Component {
 
 ```jsx
 function App() {
-  const state = useSynapse(stores => ({
-    counter: stores.counter.state.counter,
-  }));
+  const [counter] = useSynapse(({ counter }) => [counter.state.counter]);
 
   return <div>{state.counter}</div>;
 }

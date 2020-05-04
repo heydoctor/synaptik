@@ -10,11 +10,10 @@
         }
       }
     ],
-    "@babel/react"
+    "@babel/react",
+    "@babel/typescript"
   ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties"
-  ],
+  "plugins": ["@babel/plugin-proposal-class-properties"],
   "env": {
     "test": {
       "plugins": ["@babel/plugin-transform-modules-commonjs"]

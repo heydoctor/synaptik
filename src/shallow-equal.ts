@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default function isShallowEqual(objA, objB) {
   if (objA === objB) {
     return true;
