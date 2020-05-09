@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`synpatik Store requires id and synapse 1`] = `"Store requires an id"`;
+
+exports[`synpatik Store requires id and synapse 2`] = `"Store requires a synapse instance"`;

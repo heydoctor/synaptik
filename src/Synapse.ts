@@ -6,10 +6,8 @@ export type InstancesOf<C extends Readonly<C>> = {
   [K in keyof C]: Omit<InstanceType<C[K]>, 'runAsync' | 'setState' | 'stores'>;
 };
 export type StoreStateOf<S extends Readonly<S>> = {
-  [K in keyof S]: {
-    // @ts-ignore
-    state: S[K]['state'];
-  };
+  // @ts-ignore
+  [K in keyof S]: S[K]['state'];
 };
 
 export class Synapse<Constructors extends Readonly<Constructors>> {
@@ -33,8 +31,7 @@ export class Synapse<Constructors extends Readonly<Constructors>> {
       const key = id as keyof InstancesOf<Constructors>;
       const store = new Store(key, this) as InstancesOf<Constructors>[keyof InstancesOf<
         Constructors
-      >] &
-        StoreStateOf<InstancesOf<Constructors>>[keyof InstancesOf<Constructors>];
+      >] & { state: StoreStateOf<InstancesOf<Constructors>>[keyof InstancesOf<Constructors>] };
 
       this.stores[key] = store;
       this.updateState(key, store.state, { log: false });
@@ -47,7 +44,7 @@ export class Synapse<Constructors extends Readonly<Constructors>> {
 
   updateState<T extends keyof InstancesOf<Constructors>>(
     storeId: T,
-    state: any,
+    state: StoreStateOf<InstancesOf<Constructors>>[T],
     { log = true } = {}
   ) {
     const oldState = { ...this.state };
