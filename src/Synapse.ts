@@ -1,6 +1,13 @@
-type Logger<T> = (oldState: StoreState<T>, newState: StoreState<T>) => void;
-// @ts-ignore
-type StoreState<C> = InstanceType<C[keyof C] & { state: object }>['state'];
+type ConstructorObject<C> = { [K in keyof C]: new (...args: any[]) => any };
+type Logger<T extends ConstructorObject<T>> = (
+  oldState: StoreState<T>,
+  newState: StoreState<T>
+) => void;
+
+type StoreState<C extends ConstructorObject<C>> = InstanceType<
+  C[keyof C] & { state: object }
+>['state'];
+
 // @ts-ignore
 type State<C> = { [K in keyof C]: InstanceType<C[K]>['state'] };
 

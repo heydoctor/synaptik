@@ -22,7 +22,8 @@
     "clean": "rimraf dist",
     "rollup": "rollup -c",
     "release": "npm-run-all test build bump",
-    "example": "parcel example/index.html"
+    "example": "parcel example/index.html",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "deep-object-diff": "^1.1.0",
@@ -80,6 +81,7 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
+      "yarn typecheck",
       "yarn lint"
     ]
   }
