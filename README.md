@@ -61,17 +61,17 @@ export default class TodoStore extends Store<TodoStore, Stores> {
 }
 ```
 
-Next, create a file that will export your hooks and types.
+Next, create a file that will export your store `Provider` and `useSynapse` hook:
 
 ```tsx
 // app/lib/synaptik.ts
 import { createSynaptik, Synapse } from 'synaptik';
 import * as stores from './stores';
 
-const { Provider, useSynapse, connect } = createSynaptik(new Synapse(stores));
+const { Provider, useSynapse } = createSynaptik(new Synapse(stores));
 
 export type Stores = typeof stores;
-export { Provider, useSynapse, connect };
+export { Provider, useSynapse };
 ```
 
 Lastly, wrap your application with the `Provider`.
@@ -98,9 +98,10 @@ const App = () => (
 render(<App />, window.root);
 ```
 
-Now, you can access your stores and your state with one of our convenient interfaces with full type safety:
+Now, you can access your stores and state with the `useSynapse` hook:
 
-#### `useSynapse` hook
+> NOTE: if your selector functions returns non-primitive values in an array,
+> you must mark the array `as const` for Typescript to properly infer the signatures of the destructured elements
 
 ```tsx
 import { useSynapse } from 'app/lib/synaptik';
@@ -128,78 +129,7 @@ function TodoList() {
 }
 ```
 
-#### `@connect` decorator/HOC
-
-> Particuarly useful when you need to access props in your component methods.
-
-```jsx
-import React, { Component } from 'react';
-import { connect } from 'app/lib/synaptik';
-
-@connect(({ todos }) => ({
-  todos: todos.state.entries,
-  input: todos.state.input,
-  updateInput: todos.updateInput,
-  addTodo: todos.addTodo,
-}))
-export default class TodoList extends Component {
-  render() {
-    const { todos, input, updateInput, addTodo } = this.props;
-
-    return (
-      <>
-        <ul>
-          {todos.map(todo => (
-            <li>{todo}</li>
-          ))}
-        </ul>
-
-        <form onSubmit={addTodo}>
-          <input value={input} onChange={updateInput} />
-          <button type="submit">Submit</button>
-        </form>
-      </>
-    );
-  }
-}
-```
-
-You've done it! You have your first todo app up and running 3 simple steps.
-
-## Docs
-
-### `createSynaptik(synapseInstance)`
-
-##### Props
-
-// TODO: finish docs
-
-### `connect(selector)`
-
-- `selector(stores): StateSlice`
-
-```jsx
-@connect(stores => ({
-  counter: stores.count.state.counter,
-}))
-class App extends Component {
-  render() {
-    return <div>{this.props.counter}</div>;
-  }
-}
-```
-
-### `useSynapse(selector)`
-
-- `selector(stores): StateSlice`
-
-```jsx
-function App() {
-  const [counter] = useSynapse(({ counter }) => [counter.state.counter]);
-
-  return <div>{state.counter}</div>;
-}
-```
+🚀 You've done it! You have your first todo app up and running 3 simple steps.
 
 ## LICENSE
 
