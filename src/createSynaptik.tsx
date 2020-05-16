@@ -1,6 +1,10 @@
 import React, { useContext, useState, useEffect, useRef, useCallback, forwardRef } from 'react';
-import shallowEqual from './shallow-equal';
-import { Synapse, InstancesOf } from './Synapse';
+import shallowEqual from 'shallowequal';
+import { Synapse } from './Synapse';
+
+type State<C extends { [K in keyof C]: new (...args: any[]) => any }> = {
+  [K in keyof C]: InstanceType<C[K]>;
+};
 
 export function createSynaptik<Constructors extends Readonly<Constructors>>(
   synapse: Synapse<Constructors>
@@ -11,7 +15,7 @@ export function createSynaptik<Constructors extends Readonly<Constructors>>(
     <Context.Provider value={synapse}>{children}</Context.Provider>
   );
 
-  function useSynapse<T extends (state: InstancesOf<Constructors>) => ReturnType<T>>(
+  function useSynapse<T extends (state: State<Constructors>) => ReturnType<T>>(
     selector: T,
     dependencies: any[] = []
   ) {
@@ -56,7 +60,7 @@ export function createSynaptik<Constructors extends Readonly<Constructors>>(
     return state;
   }
 
-  function connect<T extends (state: InstancesOf<Constructors>) => ReturnType<T>>(selector: T) {
+  function connect<T extends (state: State<Constructors>) => ReturnType<T>>(selector: T) {
     return (Component: React.ComponentType<any>) =>
       forwardRef((props, ref) => {
         const state = useSynapse(selector);

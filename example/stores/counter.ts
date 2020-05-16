@@ -1,7 +1,8 @@
 import { Store } from '../../src';
+import { Stores } from '../synaptik';
 
-export default class CounterStore extends Store {
-  state = {
+export default class CounterStore extends Store<CounterStore, Stores> {
+  state: { count: number } = {
     count: 0,
   };
 

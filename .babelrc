@@ -6,7 +6,7 @@
       {
         "loose": true,
         "targets": {
-          "browsers": ["last 1 version"]
+          "browsers": ["last 2 Chrome versions"]
         }
       }
     ],

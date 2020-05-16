@@ -5,11 +5,13 @@ import * as synaptik from '../src';
 
 class CounterStore extends synaptik.Store<CounterStore, typeof stores> {
   state = {
-    counter: 0,
+    count: 0,
   };
 
   increment = () => {
-    this.setState({ counter: this.state.counter + 1 });
+    this.setState(state => ({
+      count: state.count + 1,
+    }));
   };
 }
 
@@ -32,28 +34,27 @@ describe('synpatik', () => {
       const synapse = new synaptik.Synapse(stores, { logger });
 
       // logs by default
-      synapse.updateState('counter', {});
+      synapse.updateState('counter', { count: 0 });
       expect(logger).toHaveBeenCalled();
 
       logger.mockReset();
 
       // ignore logs
-      synapse.updateState(null, null, { log: false });
+      synapse.updateState('counter', { count: 1 }, { log: false });
       expect(logger).not.toHaveBeenCalled();
     });
 
     test('updating state', () => {
       synapse.updateState('counter', {
-        counter: 1,
+        count: 1,
       });
 
-      const newState = synapse.getState();
-      expect(newState.counter.counter).toEqual(1);
+      expect(synapse.state.counter.count).toEqual(1);
 
-      expect(synapse.getState()).toMatchInlineSnapshot(`
+      expect(synapse.state).toMatchInlineSnapshot(`
         Object {
           "counter": Object {
-            "counter": 1,
+            "count": 1,
           },
         }
       `);
@@ -65,7 +66,7 @@ describe('synpatik', () => {
       // Subscribe to the synapse
       const subscription = synapse.subscribe(spy);
       synapse.updateState('counter', {
-        counter: 1,
+        count: 1,
       });
 
       expect(spy).toHaveBeenCalledTimes(1);
@@ -75,7 +76,7 @@ describe('synpatik', () => {
       subscription();
 
       synapse.updateState('counter', {
-        counter: 2,
+        count: 2,
       });
 
       expect(spy).toHaveBeenCalledTimes(1);
@@ -104,6 +105,7 @@ describe('synpatik', () => {
       const spy = jest.fn().mockImplementationOnce(() => ({}));
       synapse.updateState = jest.fn();
       store.setState(spy);
+      // @ts-ignore
       expect(synapse.updateState).toHaveBeenCalledWith(store.id, store.state, {
         log: true,
       });
@@ -115,8 +117,8 @@ describe('synpatik', () => {
       const { Provider, useSynapse } = synaptik.createSynaptik(synapse);
 
       const Counter = () => {
-        const state = useSynapse(({ counter }) => ({ counter: counter.state.counter }));
-        return <div>Counter: {state.counter}</div>;
+        const [counter] = useSynapse(({ counter }) => [counter.state.count]);
+        return <div>Counter: {counter}</div>;
       };
 
       const App = () => (
