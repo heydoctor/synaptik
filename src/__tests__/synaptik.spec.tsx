@@ -111,6 +111,12 @@ describe('synpatik', () => {
         log: true,
       });
     });
+
+    test('setState supports promises', async () => {
+      expect(store.state).toEqual({ count: 0 });
+      await expect(store.setState({ count: 10 })).resolves.toEqual({ count: 10 });
+      expect(store.state).toEqual({ count: 10 });
+    });
   });
 
   describe('useSynapse', () => {

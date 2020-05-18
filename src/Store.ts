@@ -28,11 +28,15 @@ export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
   }
 
   setState(updater: Updater<S['state']>, { log = true } = {}) {
-    const updates: Partial<S['state']> =
-      typeof updater === 'function' ? updater(this.state) : updater;
+    return new Promise(resolve => {
+      const updates: Partial<S['state']> =
+        typeof updater === 'function' ? updater(this.state) : updater;
 
-    this.state = { ...this.state, ...updates };
-    this.synapse.updateState(this.id, this.state, { log });
+      this.state = { ...this.state, ...updates };
+      this.synapse.updateState(this.id, this.state, { log });
+
+      return resolve(this.state);
+    });
   }
 
   async runAsync<T>({ key, work, log = true }: RunAsync<T, S['state']>) {
