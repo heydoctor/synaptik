@@ -1,4 +1,4 @@
-import { Synapse } from './Synapse';
+import { Synapse, ConstructorMap } from './Synapse';
 
 type Updater<State extends object> = Partial<State> | ((state: State) => Partial<State>);
 
@@ -8,14 +8,16 @@ type RunAsync<T, S> = {
   log?: boolean;
 };
 
-export class Store<S extends { state: object }, Stores extends Readonly<Stores>> {
-  stores = {} as Synapse<Stores>['stores'];
+export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
+  stores = {} as {
+    [K in keyof Synapse<C>['stores']]: Omit<
+      Synapse<C>['stores'][K],
+      'runAsync' | 'setState' | 'stores'
+    >;
+  };
   state = {} as S['state'];
 
-  private id: keyof Stores;
-  synapse: Synapse<Stores>;
-
-  constructor(id: keyof Stores, synapse: Synapse<Stores>) {
+  constructor(private id: keyof C, private synapse: Synapse<C>) {
     if (!id) throw new Error('Store requires an id');
     if (!synapse) throw new Error('Store requires a synapse instance');
 
@@ -30,7 +32,6 @@ export class Store<S extends { state: object }, Stores extends Readonly<Stores>>
       typeof updater === 'function' ? updater(this.state) : updater;
 
     this.state = { ...this.state, ...updates };
-    // @ts-ignore
     this.synapse.updateState(this.id, this.state, { log });
   }
 

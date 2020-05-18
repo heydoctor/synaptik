@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, act, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
-import * as synaptik from '../src';
+import * as synaptik from '..';
 
 class CounterStore extends synaptik.Store<CounterStore, typeof stores> {
   state = {
@@ -64,16 +64,15 @@ describe('synpatik', () => {
       const spy = jest.fn();
 
       // Subscribe to the synapse
-      const subscription = synapse.subscribe(spy);
+      const unsubscribe = synapse.subscribe(spy);
       synapse.updateState('counter', {
         count: 1,
       });
 
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(synapse.state);
 
       // Unsubscribe to the synapse
-      subscription();
+      unsubscribe();
 
       synapse.updateState('counter', {
         count: 2,
@@ -91,7 +90,9 @@ describe('synpatik', () => {
     });
 
     test('requires id and synapse', () => {
+      // @ts-expect-error
       expect(() => new CounterStore()).toThrowErrorMatchingSnapshot();
+      // @ts-expect-error
       expect(() => new CounterStore('counter')).toThrowErrorMatchingSnapshot();
     });
 
@@ -105,7 +106,7 @@ describe('synpatik', () => {
       const spy = jest.fn().mockImplementationOnce(() => ({}));
       synapse.updateState = jest.fn();
       store.setState(spy);
-      // @ts-ignore
+      // @ts-expect-error
       expect(synapse.updateState).toHaveBeenCalledWith(store.id, store.state, {
         log: true,
       });

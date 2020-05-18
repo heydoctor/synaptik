@@ -1,46 +1,49 @@
-type ConstructorObject<C> = { [K in keyof C]: new (...args: any[]) => any };
-type Logger<T extends ConstructorObject<T>> = (
+export type ConstructorMap<T> = Record<keyof T, new (...args: any[]) => any>;
+
+type Logger<T extends ConstructorMap<T>> = (
   oldState: StoreState<T>,
   newState: StoreState<T>
 ) => void;
 
-type StoreState<C extends ConstructorObject<C>> = InstanceType<
-  C[keyof C] & { state: object }
->['state'];
+export type MapClassInstances<T extends ConstructorMap<T>> = {
+  [K in keyof T]: new (...args: any[]) => InstanceType<T[K]>;
+};
 
-// @ts-ignore
-type State<C> = { [K in keyof C]: InstanceType<C[K]>['state'] };
+export type Stores<T extends ConstructorMap<T>> = {
+  [K in keyof T]: InstanceType<T[K]>;
+};
 
-export class Synapse<C extends Readonly<C>> {
-  stores = {} as { [K in keyof C]: InstanceType<C[K]> };
+type StoreState<T extends ConstructorMap<T>> = {
+  [K in keyof T]: Stores<T>[K]['state'];
+};
+
+export class Synapse<C extends ConstructorMap<C>> {
+  stores = {} as Stores<C>;
 
   private counter = 0;
   private logger?: Logger<C>;
-  private subscriptions: Record<string, (state: State<C>) => void> = {};
+  private subscriptions: Record<string, () => void> = {};
 
   constructor(stores: C, config: { logger?: Logger<C> } = {}) {
     this.logger = config.logger;
 
-    Object.entries<new (...args: any[]) => C[keyof C]>(stores).forEach(([id, Store]) => {
+    Object.entries<MapClassInstances<C>[keyof C]>(stores).forEach(([id, Store]) => {
       const key = id as keyof C;
-      const store = new Store(key, this) as InstanceType<C[keyof C]> & {
-        state: StoreState<C>;
-      };
+      const store = new Store(key, this);
 
       this.stores[key] = store;
       this.updateState(key, store.state, { log: false });
     });
   }
 
-  updateState<K extends keyof C>(
+  updateState<K extends keyof Stores<C>, S extends object>(
     storeId: K,
-    // @ts-ignore
-    state: InstanceType<C[K]>['state'],
+    state: S,
     { log = true } = {}
   ) {
     const oldState = { ...this.state[storeId] };
-    // @ts-ignore
-    this.stores[storeId]['state'] = state;
+
+    this.stores[storeId].state = state;
     this.notify();
 
     if (log && this.logger) {
@@ -49,14 +52,13 @@ export class Synapse<C extends Readonly<C>> {
   }
 
   get state() {
-    return Object.entries<InstanceType<C[keyof C]>>(this.stores).reduce((acc, [id, store]) => {
-      // @ts-ignore
+    return Object.entries<Stores<C>[keyof C]>(this.stores).reduce((acc, [id, store]) => {
       acc[id as keyof C] = store['state'];
       return acc;
-    }, {} as State<C>);
+    }, {} as StoreState<C>);
   }
 
-  subscribe(callback: (state: State<C>) => void) {
+  subscribe(callback: () => void) {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function');
     }
@@ -69,7 +71,5 @@ export class Synapse<C extends Readonly<C>> {
     };
   }
 
-  notify = () => {
-    Object.values(this.subscriptions).forEach(fn => fn(this.state));
-  };
+  notify = () => Object.values(this.subscriptions).forEach(fn => fn());
 }

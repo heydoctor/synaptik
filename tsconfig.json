@@ -13,8 +13,10 @@
     "noEmitOnError": false,
     "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
+
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

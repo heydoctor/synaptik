@@ -81,7 +81,7 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
-      "yarn typecheck",
+      "bash -c tsc --noEmit",
       "yarn lint"
     ]
   }
