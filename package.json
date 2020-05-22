@@ -1,6 +1,6 @@
 {
   "name": "synaptik",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Yet another state management library",
   "main": "lib/synaptik.js",
   "module": "lib/synaptik.es.js",
