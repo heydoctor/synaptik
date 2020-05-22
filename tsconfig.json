@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "declaration": true,
+    "declarationDir": "./lib",
+    "outDir": "./lib",
+    "lib": ["es2015", "es2016"],
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noEmitOnError": false,
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

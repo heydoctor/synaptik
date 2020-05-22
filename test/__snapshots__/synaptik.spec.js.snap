@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Store requires id and synapse 1`] = `"Store requires an id"`;
-
-exports[`Store requires id and synapse 2`] = `"Store requires a synapse instance"`;

@@ -1,8 +1,18 @@
 import { Store } from '../../src';
 import immer from 'immer';
+import { Stores } from '../synaptik';
 
-export default class WeatherStore extends Store {
-  state = {
+type Forecast = {
+  date: string;
+  high: number;
+  low: number;
+};
+
+export default class WeatherStore extends Store<WeatherStore, Stores> {
+  state: {
+    loading: boolean;
+    forecast: Forecast[];
+  } = {
     loading: false,
     forecast: [],
   };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSynapse } from '../../src';
+import { useSynapse } from '../synaptik';
 
 export default () => {
   const [todoInput, setTodoInput] = useState('');
@@ -9,7 +9,7 @@ export default () => {
     deleteTodo: todos.deleteTodo,
   }));
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     state.addTodo(todoInput);
     setTodoInput('');

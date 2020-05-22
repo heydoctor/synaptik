@@ -6,18 +6,17 @@
       {
         "loose": true,
         "targets": {
-          "browsers": ["last 1 version"]
+          "browsers": ["last 2 Chrome versions"]
         }
       }
     ],
-    "@babel/react"
+    "@babel/react",
+    "@babel/typescript"
   ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties"
-  ],
+  "plugins": ["@babel/plugin-proposal-class-properties"],
   "env": {
     "test": {
-      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+      "plugins": ["@babel/plugin-transform-runtime"]
     }
   }
 }
