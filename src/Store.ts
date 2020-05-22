@@ -15,6 +15,7 @@ export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
       'runAsync' | 'setState' | 'stores'
     >;
   };
+
   state = {} as S['state'];
 
   constructor(private id: keyof C, private synapse: Synapse<C>) {
