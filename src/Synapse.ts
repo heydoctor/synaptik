@@ -23,6 +23,7 @@ export class Synapse<C extends ConstructorMap<C>> {
   private counter = 0;
   private logger?: Logger<C>;
   private subscriptions: Record<string, () => void> = {};
+  private state = {} as StoreState<C>;
 
   constructor(stores: C, config: { logger?: Logger<C> } = {}) {
     this.logger = config.logger;
@@ -36,29 +37,22 @@ export class Synapse<C extends ConstructorMap<C>> {
     });
   }
 
-  updateState<K extends keyof Stores<C>, S extends object>(
+  updateState = <K extends keyof Stores<C>, S extends object>(
     storeId: K,
     state: S,
     { log = true } = {}
-  ) {
+  ) => {
     const oldState = { ...this.state[storeId] };
 
-    this.stores[storeId].state = state;
+    this.state[storeId] = state;
     this.notify();
 
     if (log && this.logger) {
       this.logger(oldState, this.state[storeId]);
     }
-  }
+  };
 
-  get state() {
-    return Object.entries<Stores<C>[keyof C]>(this.stores).reduce((acc, [id, store]) => {
-      acc[id as keyof C] = store['state'];
-      return acc;
-    }, {} as StoreState<C>);
-  }
-
-  subscribe(callback: () => void) {
+  subscribe = (callback: () => void) => {
     if (typeof callback !== 'function') {
       throw new Error('callback must be a function');
     }
@@ -69,7 +63,7 @@ export class Synapse<C extends ConstructorMap<C>> {
     return () => {
       delete this.subscriptions[id];
     };
-  }
+  };
 
   notify = () => Object.values(this.subscriptions).forEach(fn => fn());
 }

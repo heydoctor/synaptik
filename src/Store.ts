@@ -25,11 +25,10 @@ export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
     this.id = id;
     this.synapse = synapse;
     this.stores = synapse.stores;
-    this.state = {};
   }
 
-  setState(updater: Updater<S['state']>, { log = true } = {}) {
-    return new Promise(resolve => {
+  setState = (updater: Updater<S['state']>, { log = true } = {}) =>
+    new Promise(resolve => {
       const updates: Partial<S['state']> =
         typeof updater === 'function' ? updater(this.state) : updater;
 
@@ -38,21 +37,20 @@ export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
 
       return resolve(this.state);
     });
-  }
 
-  async runAsync<T>({ key, work, log = true }: RunAsync<T, S['state']>) {
+  runAsync = async <T>({ key, work, log = true }: RunAsync<T, S['state']>) => {
     const errorKey = `${key}Error`;
     const storeKey = key || 'loading';
 
-    this.setState({ [storeKey]: true, [errorKey]: null } as S['state'], { log });
+    await this.setState({ [storeKey]: true, [errorKey]: null } as S['state'], { log });
 
     try {
       const res = await work();
-      this.setState({ [storeKey]: false } as S['state'], { log });
+      await this.setState({ [storeKey]: false } as S['state'], { log });
       return res;
     } catch (error) {
-      this.setState({ [storeKey]: false, [errorKey]: error } as S['state'], { log });
+      await this.setState({ [storeKey]: false, [errorKey]: error } as S['state'], { log });
       throw error;
     }
-  }
+  };
 }
