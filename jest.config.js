@@ -6,4 +6,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   testMatch: ['**/*.spec.(tsx|ts)'],
   transform: { '^.+\\.(ts|tsx|)$': 'babel-jest' },
+  setupFiles: ['<rootDir>/src/test/setup.js'],
 };

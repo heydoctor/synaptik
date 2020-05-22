@@ -3,8 +3,13 @@ import { render, act, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 import * as synaptik from '..';
 
+const flushPromises = () => new Promise(resolve => setTimeout(resolve));
+
 class CounterStore extends synaptik.Store<CounterStore, typeof stores> {
-  state = {
+  state: {
+    count: number;
+    updatingCount?: boolean;
+  } = {
     count: 0,
   };
 
@@ -13,6 +18,35 @@ class CounterStore extends synaptik.Store<CounterStore, typeof stores> {
       count: state.count + 1,
     }));
   };
+
+  asyncIncrement = () =>
+    this.runAsync({
+      key: 'updatingCount',
+      work: async () => {
+        await this.setState({
+          count: this.state.count + 1,
+        });
+      },
+    });
+}
+
+class TodoStore extends synaptik.Store<TodoStore, any> {
+  state = {
+    todos: ['buy milk'],
+    settingTodos: false,
+  };
+
+  constructor(...args: [any, any]) {
+    super(...args);
+    this.runAsync({
+      key: 'settingTodos',
+      work: () => {
+        this.setState(state => ({
+          todos: [...state.todos, 'Fix test'],
+        }));
+      },
+    });
+  }
 }
 
 const stores = {
@@ -114,8 +148,31 @@ describe('synpatik', () => {
 
     test('setState supports promises', async () => {
       expect(store.state).toEqual({ count: 0 });
-      await expect(store.setState({ count: 10 })).resolves.toEqual({ count: 10 });
+      await expect(store.setState({ count: 10 })).resolves.toMatchObject({ count: 10 });
       expect(store.state).toEqual({ count: 10 });
+    });
+
+    test('#runAsync', async () => {
+      const spy = jest.spyOn(store, 'setState');
+
+      await store.asyncIncrement();
+
+      expect(spy).toBeCalledTimes(3);
+      expect(spy.mock.calls[0][0]).toMatchObject({ updatingCount: true, updatingCountError: null });
+      expect(spy.mock.calls[1][0]).toMatchObject({ count: 1 });
+      expect(spy.mock.calls[2][0]).toMatchObject({ updatingCount: false });
+    });
+
+    test('allows setting state asynchronously in constructor()', async () => {
+      // We have an async call when instantiating the TodoStore
+      const {
+        stores: { todos },
+      } = new synaptik.Synapse({ todos: TodoStore });
+
+      // We want clear the microtask queue before checking for state updates
+      await flushPromises();
+
+      expect(todos.state.todos).toEqual(expect.arrayContaining(['buy milk', 'Fix test']));
     });
   });
 
