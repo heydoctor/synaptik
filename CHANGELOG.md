@@ -1,6 +1,18 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.0.0](https://github.com/heydoctor/synaptik/compare/v1.3.2...v2.0.0) (2020-05-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes `<Connect />` component 
+* changes how the store provider and hooks are created
+
+### Features
+
+* Add Typescript support to Synaptik ([#22](https://github.com/heydoctor/synaptik/issues/22)) ([51c17c2](https://github.com/heydoctor/synaptik/commit/51c17c2acb699f69f4d293d395d6161f059d458d))
 
 <a name="1.3.2"></a>
 ## [1.3.2](https://github.com/sappira-inc/synaptik/compare/v1.3.0...v1.3.2) (2020-04-21)
