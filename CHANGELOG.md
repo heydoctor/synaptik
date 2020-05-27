@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/heydoctor/synaptik/compare/v2.0.0...v2.0.1) (2020-05-27)
+
+
+### Bug Fixes
+
+* Fix setState race condition ([#24](https://github.com/heydoctor/synaptik/issues/24)) ([8cde514](https://github.com/heydoctor/synaptik/commit/8cde51477d5d24c95a129005c8764a621ead5e87))
+
 ## [2.0.0](https://github.com/heydoctor/synaptik/compare/v1.3.2...v2.0.0) (2020-05-22)
 
 
