@@ -38,11 +38,13 @@ Begin by creating your first store, which extends from `Store`.
 import { Store } from 'synaptik';
 import { Stores } from 'app/lib/synaptik';
 
-export default class TodoStore extends Store<TodoStore, Stores> {
-  state: {
-    input: string;
-    entries: string[];
-  } = {
+interface TodoState {
+  input: string;
+  entries: string[];
+}
+
+export default class TodoStore extends Store<TodoState, Stores> {
+  state = {
     input: '',
     entries: [],
   };
@@ -53,7 +55,7 @@ export default class TodoStore extends Store<TodoStore, Stores> {
 
   addTodo = (todo: string) => {
     // setState acts like React component's setState,
-    // meaning that it runs asynchronously and can also be passed an updater function.
+    // except that it runs synchronously
     this.setState({
       entries: [...this.state.entries, todo],
     });
@@ -65,10 +67,10 @@ Next, create a file that will export your store `Provider` and `useSynapse` hook
 
 ```tsx
 // app/lib/synaptik.ts
-import { createSynaptik, Synapse } from 'synaptik';
+import { createSynaptik } from 'synaptik';
 import * as stores from './stores';
 
-const { Provider, useSynapse } = createSynaptik(new Synapse(stores));
+const { Provider, useSynapse } = createSynaptik(stores);
 
 export type Stores = typeof stores;
 export { Provider, useSynapse };
@@ -107,10 +109,12 @@ Now, you can access your stores and state with the `useSynapse` hook:
 import { useSynapse } from 'app/lib/synaptik';
 
 function TodoList() {
-  const [todos, input, updateInput, addTodo] = useSynapse(
-    ({ todos }) =>
-      [todos.state.entries, todos.state.input, todos.updateInput, todos.addTodo] as const
-  );
+  const [todos, input, updateInput, addTodo] = useSynapse(({ todos }) => [
+    todos.state.entries, 
+    todos.state.input, 
+    todos.updateInput, 
+    todos.addTodo
+  ]);
 
   return (
     <>
@@ -129,7 +133,7 @@ function TodoList() {
 }
 ```
 
-🚀 You've done it! You have your first todo app up and running 3 simple steps.
+🚀 You've done it! You have your first todo app up and running 4 simple steps.
 
 ## LICENSE
 

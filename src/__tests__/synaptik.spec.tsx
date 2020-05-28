@@ -1,15 +1,15 @@
 import React from 'react';
 import { render, act, cleanup } from 'react-testing-library';
 import 'jest-dom/extend-expect';
-import * as synaptik from '..';
+import { createSynaptik, Store } from '..';
+import { SynaptikInstance } from '../createSynaptik';
 
-const flushPromises = () => new Promise(resolve => setTimeout(resolve));
-
-class CounterStore extends synaptik.Store<CounterStore, typeof stores> {
-  state: {
-    count: number;
-    updatingCount?: boolean;
-  } = {
+interface CounterState {
+  count: number;
+  updatingCount?: boolean;
+}
+class CounterStore extends Store<CounterState, typeof testStores> {
+  state = {
     count: 0,
   };
 
@@ -23,69 +23,35 @@ class CounterStore extends synaptik.Store<CounterStore, typeof stores> {
     this.runAsync({
       key: 'updatingCount',
       work: async () => {
-        await this.setState({
+        this.setState({
           count: this.state.count + 1,
         });
       },
     });
 }
 
-class TodoStore extends synaptik.Store<TodoStore, any> {
-  state = {
-    todos: ['buy milk'],
-    settingTodos: false,
-  };
-
-  constructor(...args: [any, any]) {
-    super(...args);
-    this.runAsync({
-      key: 'settingTodos',
-      work: () => {
-        this.setState(state => ({
-          todos: [...state.todos, 'Fix test'],
-        }));
-      },
-    });
-  }
-}
-
-const stores = {
+const testStores = {
   counter: CounterStore,
 };
 
 describe('synpatik', () => {
-  let synapse: synaptik.Synapse<typeof stores>;
+  let synaptik: SynaptikInstance<typeof testStores>;
 
   beforeEach(() => {
-    synapse = new synaptik.Synapse(stores);
+    synaptik = createSynaptik(testStores);
   });
 
   afterEach(cleanup);
 
-  describe('Synapse', () => {
-    test('logger', () => {
-      const logger = jest.fn();
-      const synapse = new synaptik.Synapse(stores, { logger });
-
-      // logs by default
-      synapse.updateState('counter', { count: 0 });
-      expect(logger).toHaveBeenCalled();
-
-      logger.mockReset();
-
-      // ignore logs
-      synapse.updateState('counter', { count: 1 }, { log: false });
-      expect(logger).not.toHaveBeenCalled();
-    });
-
-    test('updating state', () => {
-      synapse.updateState('counter', {
+  describe('createSynaptik', () => {
+    test('updateState/getState', () => {
+      synaptik.updateState('counter', {
         count: 1,
       });
 
-      expect(synapse.state.counter.count).toEqual(1);
+      expect(synaptik.getState().counter.count).toEqual(1);
 
-      expect(synapse.state).toMatchInlineSnapshot(`
+      expect(synaptik.getState()).toMatchInlineSnapshot(`
         Object {
           "counter": Object {
             "count": 1,
@@ -94,12 +60,12 @@ describe('synpatik', () => {
       `);
     });
 
-    test('subscriptions', () => {
+    test('internal subscriptions', () => {
       const spy = jest.fn();
 
       // Subscribe to the synapse
-      const unsubscribe = synapse.subscribe(spy);
-      synapse.updateState('counter', {
+      const unsubscribe = synaptik.subscribe(spy);
+      synaptik.updateState('counter', {
         count: 1,
       });
 
@@ -108,7 +74,7 @@ describe('synpatik', () => {
       // Unsubscribe to the synapse
       unsubscribe();
 
-      synapse.updateState('counter', {
+      synaptik.updateState('counter', {
         count: 2,
       });
 
@@ -117,78 +83,52 @@ describe('synpatik', () => {
   });
 
   describe('Store', () => {
-    let store: CounterStore;
-
-    beforeEach(() => {
-      store = new CounterStore('counter', synapse);
-    });
-
     test('requires id and synapse', () => {
-      // @ts-expect-error
+      // @ts-ignore
       expect(() => new CounterStore()).toThrowErrorMatchingSnapshot();
-      // @ts-expect-error
+      // @ts-ignore
       expect(() => new CounterStore('counter')).toThrowErrorMatchingSnapshot();
     });
 
     test('setState can take an updater function', () => {
       const spy = jest.fn().mockImplementationOnce(() => ({}));
-      store.setState(spy);
-      expect(spy).toHaveBeenCalledWith(store.state);
+      synaptik.stores.counter.setState(spy);
+      expect(spy).toHaveBeenCalledWith(synaptik.stores.counter.state);
     });
 
     test('setState calls synapse.updateState', () => {
       const spy = jest.fn().mockImplementationOnce(() => ({}));
-      synapse.updateState = jest.fn();
-      store.setState(spy);
-      // @ts-expect-error
-      expect(synapse.updateState).toHaveBeenCalledWith(store.id, store.state, {
-        log: true,
-      });
-    });
-
-    test('setState supports promises', async () => {
-      expect(store.state).toEqual({ count: 0 });
-      await expect(store.setState({ count: 10 })).resolves.toMatchObject({ count: 10 });
-      expect(store.state).toEqual({ count: 10 });
+      synaptik.stores.counter.synapse.updateState = jest.fn();
+      synaptik.stores.counter.setState(spy);
+      expect(synaptik.stores.counter.synapse.updateState).toHaveBeenCalledWith(
+        synaptik.stores.counter.id,
+        synaptik.stores.counter.state
+      );
     });
 
     test('#runAsync', async () => {
-      const spy = jest.spyOn(store, 'setState');
+      const spy = jest.spyOn(synaptik.stores.counter, 'setState');
 
-      await store.asyncIncrement();
+      await synaptik.stores.counter.asyncIncrement();
 
       expect(spy).toBeCalledTimes(3);
       expect(spy.mock.calls[0][0]).toMatchObject({ updatingCount: true, updatingCountError: null });
       expect(spy.mock.calls[1][0]).toMatchObject({ count: 1 });
       expect(spy.mock.calls[2][0]).toMatchObject({ updatingCount: false });
     });
-
-    test('allows setting state asynchronously in constructor()', async () => {
-      // We have an async call when instantiating the TodoStore
-      const {
-        stores: { todos },
-      } = new synaptik.Synapse({ todos: TodoStore });
-
-      // We want clear the microtask queue before checking for state updates
-      await flushPromises();
-
-      expect(todos.state.todos).toEqual(expect.arrayContaining(['buy milk', 'Fix test']));
-    });
   });
 
   describe('useSynapse', () => {
     test('should return correct state', () => {
-      const { Provider, useSynapse } = synaptik.createSynaptik(synapse);
-
       const Counter = () => {
-        const [counter] = useSynapse(({ counter }) => [counter.state.count]);
+        const [counter] = synaptik.useSynapse(({ counter }) => [counter.state.count]);
         return <div>Counter: {counter}</div>;
       };
 
       const App = () => (
-        <Provider>
+        <synaptik.Provider>
           <Counter />
-        </Provider>
+        </synaptik.Provider>
       );
 
       const { getByText } = render(<App />);
@@ -196,7 +136,7 @@ describe('synpatik', () => {
       expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 0');
 
       act(() => {
-        synapse.stores.counter.increment();
+        synaptik.stores.counter.increment();
       });
 
       expect(getByText(/^Counter:/)).toHaveTextContent('Counter: 1');

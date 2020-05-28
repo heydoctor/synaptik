@@ -8,11 +8,13 @@ type Forecast = {
   low: number;
 };
 
-export default class WeatherStore extends Store<WeatherStore, Stores> {
-  state: {
-    loading: boolean;
-    forecast: Forecast[];
-  } = {
+interface WeatherState {
+  loading: boolean;
+  forecast: Forecast[];
+}
+
+export default class WeatherStore extends Store<WeatherState, Stores> {
+  state = {
     loading: false,
     forecast: [],
   };

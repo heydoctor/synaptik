@@ -3,15 +3,15 @@ import { useSynapse } from '../synaptik';
 
 export default () => {
   const [todoInput, setTodoInput] = useState('');
-  const state = useSynapse(({ todos }) => ({
-    todos: todos.state.todos,
-    addTodo: todos.addTodo,
-    deleteTodo: todos.deleteTodo,
-  }));
+  const [todos, addTodo, deleteTodo] = useSynapse(({ todos }) => [
+    todos.state.todos,
+    todos.addTodo,
+    todos.deleteTodo,
+  ]);
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    state.addTodo(todoInput);
+    addTodo(todoInput);
     setTodoInput('');
   };
 
@@ -21,11 +21,11 @@ export default () => {
       <h2>ToDo List</h2>
 
       <ul>
-        {state.todos.map((entry, i) => (
+        {todos.map((entry, i) => (
           <li key={entry}>
             {entry}
             &nbsp;
-            <span onClick={() => state.deleteTodo(i)}>x</span>
+            <span onClick={() => deleteTodo(i)}>x</span>
           </li>
         ))}
       </ul>

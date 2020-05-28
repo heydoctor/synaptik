@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { useSynapse } from '../synaptik';
 
 export default () => {
-  const [forecast, loading, load] = useSynapse(
-    ({ weather }) => [weather.state.forecast, weather.state.loading, weather.load] as const
-  );
+  const [forecast, loading, load] = useSynapse(({ weather }) => [
+    weather.state.forecast,
+    weather.state.loading,
+    weather.load,
+  ]);
 
   useEffect(() => {
     load();

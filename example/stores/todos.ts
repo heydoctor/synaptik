@@ -1,8 +1,12 @@
 import { Store } from '../../src';
 import { Stores } from '../synaptik';
 
-export default class TodoStore extends Store<TodoStore, Stores> {
-  state: { todos: string[] } = {
+interface TodoState {
+  todos: string[];
+}
+
+export default class TodoStore extends Store<TodoState, Stores> {
+  state: TodoState = {
     todos: [],
   };
 

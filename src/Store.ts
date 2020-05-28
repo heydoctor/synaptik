@@ -1,6 +1,6 @@
-import { Synapse, ConstructorMap } from './Synapse';
+import { ConstructorMap, Synapse, StoreMap } from './createSynaptik';
 
-type Updater<State extends object> = Partial<State> | ((state: State) => Partial<State>);
+type Updater<State = {}> = Partial<State> | ((state: State) => Partial<State>);
 
 type RunAsync<T, S> = {
   key?: keyof S;
@@ -8,17 +8,13 @@ type RunAsync<T, S> = {
   log?: boolean;
 };
 
-export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
-  stores = {} as {
-    [K in keyof Synapse<C>['stores']]: Omit<
-      Synapse<C>['stores'][K],
-      'runAsync' | 'setState' | 'stores'
-    >;
-  };
+export class Store<State, Stores extends ConstructorMap> {
+  id: string;
+  synapse = {} as Synapse<Stores>;
+  stores = {} as StoreMap<Stores>;
+  state = {} as State;
 
-  state = {} as S['state'];
-
-  constructor(private id: keyof C, private synapse: Synapse<C>) {
+  constructor(id: string, synapse: Synapse<Stores>) {
     if (!id) throw new Error('Store requires an id');
     if (!synapse) throw new Error('Store requires a synapse instance');
 
@@ -27,29 +23,28 @@ export class Store<S extends { state: object }, C extends ConstructorMap<C>> {
     this.stores = synapse.stores;
   }
 
-  setState = (updater: Updater<S['state']>, { log = true } = {}) =>
-    new Promise(resolve => {
-      const updates: Partial<S['state']> =
-        typeof updater === 'function' ? updater(this.state) : updater;
+  setState = (updater: Updater<State>) => {
+    const updates: Partial<State> = typeof updater === 'function' ? updater(this.state) : updater;
 
-      this.state = { ...this.state, ...updates };
-      this.synapse.updateState(this.id, this.state, { log });
+    this.state = { ...this.state, ...updates };
+    this.synapse.updateState(this.id, this.state);
+  };
 
-      return resolve(this.state);
-    });
-
-  runAsync = async <T>({ key, work, log = true }: RunAsync<T, S['state']>) => {
+  runAsync = async <T>({ key, work }: RunAsync<T, State>) => {
     const errorKey = `${key}Error`;
     const storeKey = key || 'loading';
 
-    await this.setState({ [storeKey]: true, [errorKey]: null } as S['state'], { log });
+    // @ts-ignore
+    await this.setState({ [storeKey]: true, [errorKey]: null });
 
     try {
       const res = await work();
-      await this.setState({ [storeKey]: false } as S['state'], { log });
+      // @ts-ignore
+      await this.setState({ [storeKey]: false });
       return res;
     } catch (error) {
-      await this.setState({ [storeKey]: false, [errorKey]: error } as S['state'], { log });
+      // @ts-ignore
+      await this.setState({ [storeKey]: false, [errorKey]: error });
       throw error;
     }
   };
