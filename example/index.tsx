@@ -7,9 +7,9 @@ import { Provider } from './synaptik';
 
 const App = () => (
   <Provider>
-    <TodoList />
     <WeatherForecast />
     <Counter />
+    <TodoList />
   </Provider>
 );
 

@@ -1,20 +1,106 @@
-import React, { useContext, useState, useEffect, useRef, useCallback, forwardRef } from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  forwardRef,
+  ComponentType,
+} from 'react';
 import shallowEqual from 'shallowequal';
-import { Synapse, Stores, MapClassInstances } from './Synapse';
 
-export function createSynaptik<C extends MapClassInstances<C>>(synapse: Synapse<C>) {
+type SubscriptionFn = (state: any) => any;
+
+export type ConstructorMap = Record<string, new (...args: any[]) => any>;
+
+export type StoreMap<T extends ConstructorMap> = {
+  [P in keyof T]?: InstanceType<T[P]>;
+};
+
+export type Synapse<Stores extends ConstructorMap> = {
+  subscribe: (subscription: SubscriptionFn) => () => void;
+  notify: () => void;
+  updateState: (id: string, newState: any) => void;
+  getState: () => {
+    [P in keyof Stores]?: InstanceType<Stores[P]>['state'];
+  };
+  stores: StoreMap<Stores>;
+};
+
+export interface SynaptikInstance<Stores extends ConstructorMap> extends Synapse<Stores> {
+  Provider: ComponentType;
+  useSynapse: <TSelected>(
+    selector: (stores: StoreMap<Stores>) => TSelected,
+    dependencies?: any[]
+  ) => TSelected;
+  connect: <TSelected>(
+    selector: (stores: StoreMap<Stores>) => TSelected,
+    dependencies?: any[]
+  ) => (Component: ComponentType) => any;
+}
+
+export function createSynaptik<T extends ConstructorMap>(passedStores: T): SynaptikInstance<T> {
+  const state: {
+    [P in keyof T]?: InstanceType<T[P]>['state'];
+  } = {};
+  const stores: StoreMap<T> = {};
+  const subscriptions: Map<number, SubscriptionFn> = new Map();
+  let currentSubscriptionId = 0;
+
+  function notify() {
+    for (const fn of subscriptions.values()) {
+      fn(state);
+    }
+  }
+
+  function subscribe(subscription: SubscriptionFn) {
+    if (typeof subscription !== 'function') {
+      throw new Error('Subscription must be a function');
+    }
+
+    const id = ++currentSubscriptionId;
+    subscriptions.set(id, subscription);
+
+    return () => {
+      subscriptions.delete(id);
+    };
+  }
+
+  function getState() {
+    return state;
+  }
+
+  function updateState(storeId: keyof T, newState: any) {
+    state[storeId] = newState;
+    notify();
+  }
+
+  const synapse = {
+    stores,
+    getState,
+    updateState,
+    subscribe,
+    notify,
+  };
+
+  Object.entries(passedStores).forEach(([id, Store]) => {
+    const store = new Store(id, synapse);
+    stores[id as keyof T] = store;
+    updateState(id, store.state);
+  });
+
   const Context = React.createContext(synapse);
 
   const Provider: React.FC = ({ children }) => (
     <Context.Provider value={synapse}>{children}</Context.Provider>
   );
 
-  function useSynapse<T extends (stores: Stores<C>) => ReturnType<T>>(
-    selector: T,
+  function useSynapse<TSelected>(
+    selector: (stores: StoreMap<T>) => TSelected,
     dependencies: any[] = []
   ) {
-    const synapse = useContext(Context);
-    const select = useCallback(() => selector(synapse.stores), []);
+    const { subscribe } = useContext(Context);
+    const select = useCallback(() => selector(stores), []);
     const [state, setState] = useState(select());
 
     // By default, our effect only fires on mount and unmount, meaning it won't see the
@@ -41,7 +127,7 @@ export function createSynaptik<C extends MapClassInstances<C>>(synapse: Synapse<
         setState(nextState);
       };
 
-      const unsubscribe = synapse.subscribe(maybeUpdateState);
+      const unsubscribe = subscribe(maybeUpdateState);
 
       maybeUpdateState();
 
@@ -54,10 +140,13 @@ export function createSynaptik<C extends MapClassInstances<C>>(synapse: Synapse<
     return state;
   }
 
-  function connect<T extends (stores: Stores<C>) => ReturnType<T>>(selector: T) {
-    return (Component: React.ComponentType<any>) =>
+  function connect<TSelected>(
+    selector: (stores: StoreMap<T>) => TSelected,
+    dependencies: any[] = []
+  ) {
+    return (Component: ComponentType<any>) =>
       forwardRef((props, ref) => {
-        const state = useSynapse(selector);
+        const state = useSynapse(selector, dependencies);
         return <Component {...state} {...props} ref={ref} />;
       });
   }
@@ -66,5 +155,6 @@ export function createSynaptik<C extends MapClassInstances<C>>(synapse: Synapse<
     Provider,
     useSynapse,
     connect,
+    ...synapse,
   };
 }
