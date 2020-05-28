@@ -35,16 +35,16 @@ export class Store<State, Stores extends ConstructorMap> {
     const storeKey = key || 'loading';
 
     // @ts-ignore
-    await this.setState({ [storeKey]: true, [errorKey]: null });
+    this.setState({ [storeKey]: true, [errorKey]: null });
 
     try {
       const res = await work();
       // @ts-ignore
-      await this.setState({ [storeKey]: false });
+      this.setState({ [storeKey]: false });
       return res;
     } catch (error) {
       // @ts-ignore
-      await this.setState({ [storeKey]: false, [errorKey]: error });
+      this.setState({ [storeKey]: false, [errorKey]: error });
       throw error;
     }
   };
