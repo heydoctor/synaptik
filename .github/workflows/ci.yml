@@ -7,8 +7,6 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
     - run: yarn install
-      env:
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - run: yarn test --coverage
     - run: npx codecov
       env:
