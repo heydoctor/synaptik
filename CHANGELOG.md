@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/heydoctor/synaptik/compare/v2.1.0...v2.1.1) (2020-05-29)
+
+
+### Bug Fixes
+
+* Remove optional annotation for store and state fields ([#26](https://github.com/heydoctor/synaptik/issues/26)) ([fa9f298](https://github.com/heydoctor/synaptik/commit/fa9f298a184fd5e339402574f6b27adc8fdcd1ac))
+
 ## [2.1.0](https://github.com/heydoctor/synaptik/compare/v2.0.1...v2.1.0) (2020-05-29)
 
 
