@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/heydoctor/synaptik/compare/v2.0.1...v2.1.0) (2020-05-29)
+
+
+### Features
+
+* Move Synapse into createSynaptik to reduce typing noise ([#25](https://github.com/heydoctor/synaptik/issues/25)) ([c33af9e](https://github.com/heydoctor/synaptik/commit/c33af9e95f33e4cc7783994cb64053dfc4aff0b8))
+
 ### [2.0.1](https://github.com/heydoctor/synaptik/compare/v2.0.0...v2.0.1) (2020-05-27)
 
 
