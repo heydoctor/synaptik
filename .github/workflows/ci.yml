@@ -1,0 +1,66 @@
+name: ci
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+    - run: yarn install
+      env:
+        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    - run: yarn test --coverage
+    - run: npx codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  publish_canary:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+    - run: |
+        git config --global user.name 'Optimus'
+        git config --global user.email 'engineering@heydoctor.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: yarn install --frozen-lockfile
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: yarn build
+    - run: yarn version --new-version 0.0.0-$(echo ${{ github.sha }} | cut -c1-7)
+    - run: yarn publish . --tag canary --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish_master:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+    - run: |
+        git config --global user.name 'Optimus'
+        git config --global user.email 'engineering@heydoctor.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        # https://github.com/actions/checkout/issues/6
+        git checkout "${GITHUB_REF:11}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: yarn install --frozen-lockfile
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: npx standard-version
+    - run: git push --follow-tags origin master
+    - run: yarn build
+    - run: yarn publish . --tag latest --access public --non-interactive
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
