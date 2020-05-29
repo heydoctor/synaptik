@@ -14,7 +14,7 @@ type SubscriptionFn = (state: any) => any;
 export type ConstructorMap = Record<string, new (...args: any[]) => any>;
 
 export type StoreMap<T extends ConstructorMap> = {
-  [P in keyof T]?: InstanceType<T[P]>;
+  [P in keyof T]: InstanceType<T[P]>;
 };
 
 export type Synapse<Stores extends ConstructorMap> = {
@@ -40,10 +40,8 @@ export interface SynaptikInstance<Stores extends ConstructorMap> extends Synapse
 }
 
 export function createSynaptik<T extends ConstructorMap>(passedStores: T): SynaptikInstance<T> {
-  const state: {
-    [P in keyof T]?: InstanceType<T[P]>['state'];
-  } = {};
-  const stores: StoreMap<T> = {};
+  const state = {} as { [P in keyof T]: InstanceType<T[P]>['state'] };
+  const stores = {} as StoreMap<T>;
   const subscriptions: Map<number, SubscriptionFn> = new Map();
   let currentSubscriptionId = 0;
 
