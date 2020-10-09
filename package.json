@@ -76,7 +76,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && sh ./.githooks/no-master-commit-push",
+      "pre-push": "sh ./.githooks/no-master-commit-push"
     }
   },
   "lint-staged": {

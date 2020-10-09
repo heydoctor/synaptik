@@ -15,9 +15,9 @@ jobs:
   publish_canary:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/master'
+    if: github.ref != 'refs/heads/main'
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
@@ -36,12 +36,12 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish_master:
+  publish_main:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
@@ -57,7 +57,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     - run: npx standard-version
-    - run: git push --follow-tags origin master
+    - run: git push --follow-tags origin main
     - run: yarn build
     - run: yarn publish . --tag latest --access public --non-interactive
       env:
