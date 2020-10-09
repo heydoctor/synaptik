@@ -2,11 +2,11 @@
 
 _The state management library you've been waiting for_
 
-[![Build Status](https://travis-ci.org/heydoctor/synaptik.svg?branch=master)](https://travis-ci.org/heydoctor/synaptik) [![codecov](https://codecov.io/gh/heydoctor/synaptik/branch/master/graph/badge.svg)](https://codecov.io/gh/heydoctor/synaptik)
+[![Build Status](https://travis-ci.org/heydoctor/synaptik.svg?branch=main)](https://travis-ci.org/heydoctor/synaptik) [![codecov](https://codecov.io/gh/heydoctor/synaptik/branch/main/graph/badge.svg)](https://codecov.io/gh/heydoctor/synaptik)
 [![npm](https://img.shields.io/npm/v/synaptik.svg)](https://www.npmjs.com/package/synaptik)
 [![npm](https://img.shields.io/npm/dm/synaptik.svg)](https://npm-stat.com/charts.html?package=synaptik&from=2017-05-19)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-brightgreen.svg)](http://standardjs.com/)
-[![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/heydoctor/synaptik/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/npm/l/synaptik.svg?style=flat-square)](https://github.com/heydoctor/synaptik/blob/main/LICENSE)
 
 ## Table of Contents
 
