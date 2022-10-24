@@ -6,6 +6,7 @@ import React, {
   useCallback,
   forwardRef,
   ComponentType,
+  ReactNode,
 } from 'react';
 import shallowEqual from 'shallowequal';
 
@@ -15,6 +16,10 @@ export type ConstructorMap = Record<string, new (...args: any[]) => any>;
 
 export type StoreMap<T extends ConstructorMap> = {
   [P in keyof T]: InstanceType<T[P]>;
+};
+
+export type ProviderProps = {
+  children?: ReactNode;
 };
 
 export type Synapse<Stores extends ConstructorMap> = {
@@ -89,7 +94,7 @@ export function createSynaptik<T extends ConstructorMap>(passedStores: T): Synap
 
   const Context = React.createContext(synapse);
 
-  const Provider: React.FC = ({ children }) => (
+  const Provider: React.FC<ProviderProps> = ({ children }) => (
     <Context.Provider value={synapse}>{children}</Context.Provider>
   );
 
