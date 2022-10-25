@@ -12,6 +12,8 @@ import shallowEqual from 'shallowequal';
 
 type SubscriptionFn = (state: any) => any;
 
+type ProviderComponent = React.FC<ProviderProps>;
+
 export type ConstructorMap = Record<string, new (...args: any[]) => any>;
 
 export type StoreMap<T extends ConstructorMap> = {
@@ -33,7 +35,7 @@ export type Synapse<Stores extends ConstructorMap> = {
 };
 
 export interface SynaptikInstance<Stores extends ConstructorMap> extends Synapse<Stores> {
-  Provider: ComponentType;
+  Provider: ProviderComponent;
   useSynapse: <TSelected>(
     selector: (stores: StoreMap<Stores>) => TSelected,
     dependencies?: any[]
@@ -94,7 +96,7 @@ export function createSynaptik<T extends ConstructorMap>(passedStores: T): Synap
 
   const Context = React.createContext(synapse);
 
-  const Provider: React.FC<ProviderProps> = ({ children }) => (
+  const Provider: ProviderComponent = ({ children }) => (
     <Context.Provider value={synapse}>{children}</Context.Provider>
   );
 
