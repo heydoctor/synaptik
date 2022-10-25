@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.3.0 (2022-10-25)
+
+
+### Features
+
+* change instance provider's type to match actual component ([#36](https://github.com/heydoctor/synaptik/issues/36)) ([ae3b4c4](https://github.com/heydoctor/synaptik/commit/ae3b4c4c1d66d9dd09fc0fb1ccbdcdf5cf952c57))
+
 ## 2.2.0 (2022-10-25)
 
 
