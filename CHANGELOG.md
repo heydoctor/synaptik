@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.2.0 (2022-10-25)
+
+
+### Features
+
+* add provider children prop type ([#35](https://github.com/heydoctor/synaptik/issues/35)) ([26e3e2f](https://github.com/heydoctor/synaptik/commit/26e3e2fb63c54cd0ec59c775b47260a96c6988da))
+
 ### [2.1.1](https://github.com/heydoctor/synaptik/compare/v2.1.0...v2.1.1) (2020-05-29)
 
 
