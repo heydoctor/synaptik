@@ -26,7 +26,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "deep-object-diff": "^1.1.0",
+    "deep-object-diff": "^1.1.7",
     "shallowequal": "^1.1.0"
   },
   "peerDependencies": {
