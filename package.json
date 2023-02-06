@@ -1,6 +1,6 @@
 {
   "name": "synaptik",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Yet another state management library",
   "main": "lib/synaptik.js",
   "module": "lib/synaptik.es.js",
@@ -30,9 +30,9 @@
     "shallowequal": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
-  },
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }, 
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
@@ -43,7 +43,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.8.3",
     "@types/jest": "^25.2.1",
-    "@types/react": "^16.9.34",
+    "@types/react": "^17.0.39",
     "@types/shallowequal": "^1.1.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -61,8 +61,8 @@
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.0.5",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-test-renderer": "^16.8.3",
     "react-testing-library": "^5.9.0",
     "rimraf": "^3.0.2",
